@@ -1,23 +1,54 @@
 import { Routes, Route } from "react-router-dom";
 import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 import { IconButton } from "@material-tailwind/react";
+import { useCallback } from "react";
+import { Avatar } from "@material-tailwind/react";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import {
   Sidenav,
   DashboardNavbar,
   Configurator,
   Footer,
 } from "@/widgets/layout";
-import routes from "@/routes";
+import {userRoutes} from "@/UserRoutes";
+ import {clientRoutes} from "@/ClientRoutes";
+ import {adminRoutes} from "@/AdminRoutes";
 import { useMaterialTailwindController, setOpenConfigurator } from "@/context";
 
 export function Dashboard() {
+  const navigate = useNavigate();
+  const [routes, setRoutes] = useState([]);
+
+  useEffect(() => {
+    const role = localStorage.getItem("role");
+
+    if (role === "user") {
+      setRoutes(userRoutes);
+    } else if (role === "admin") {
+      setRoutes(adminRoutes);
+    } else if (role === "client") {
+      setRoutes(clientRoutes);
+    }
+  }, []);
+
+  if (routes.length === 0) {
+    return null;
+  }
+
+
   const [controller, dispatch] = useMaterialTailwindController();
   const { sidenavType } = controller;
+ console.log(routes)
 
   return (
     <div className="min-h-screen bg-blue-gray-50/50">
       <Sidenav
+      
         routes={routes}
+        brandName={"admin"}
         brandImg={
           sidenavType === "dark" ? "/img/logo-ct.png" : "/img/logo-ct-dark.png"
         }
@@ -35,13 +66,30 @@ export function Dashboard() {
           <Cog6ToothIcon className="h-5 w-5" />
         </IconButton>
         <Routes>
+
+          {// TO change the Pages which you want to show on page
+}
           {routes.map(
             ({ layout, pages }) =>
-              layout === "dashboard" &&
+              layout === "user" &&
               pages.map(({ path, element }) => (
                 <Route exact path={path} element={element} />
               ))
           )}
+            {/* {routes.map(
+            ({ layout, pages }) =>
+              layout === "client" &&
+              pages.map(({ path, element }) => (
+                <Route exact path={path} element={element} />
+              ))
+          )}
+            {routes.map(
+            ({ layout, pages }) =>
+              layout === "admin" &&
+              pages.map(({ path, element }) => (
+                <Route exact path={path} element={element} />
+              ))
+          )} */}
         </Routes>
         <div className="text-blue-gray-600">
           <Footer />

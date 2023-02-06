@@ -6,7 +6,7 @@ import {
   ArrowRightOnRectangleIcon,
 } from "@heroicons/react/24/solid";
 import { Navbar, Footer } from "@/widgets/layout";
-import routes from "@/routes";
+import  { userRoutes } from "@/UserRoutes";
 
 export function Auth() {
   const navbarRoutes = [
@@ -38,7 +38,7 @@ export function Auth() {
         <Navbar routes={navbarRoutes} />
       </div>
       <Routes>
-        {routes.map(
+        {userRoutes.map(
           ({ layout, pages }) =>
             layout === "auth" &&
             pages.map(({ path, element }) => (

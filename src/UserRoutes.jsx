@@ -6,20 +6,20 @@ import {
   ArrowRightOnRectangleIcon,
   UserPlusIcon,
 } from "@heroicons/react/24/solid";
-import { Home, Profile, Settings, FeedBack } from "@/pages/dashboard";
+import { Home, Profile, Settings, FeedBack } from "@/pages/dashboards/user";
 import { SignIn,SignUp } from "@/pages/auth";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
 };
-
-export const routes = [
+//  his names are for Side menu
+ export const userRoutes = [
   {
-    layout: "dashboard",
+    layout: "user",
     pages: [
       {
         icon: <HomeIcon {...icon} />,
-        name: "dashboard",
+        name: "User ",
         path: "/home",
         element: <Home />,
       },
@@ -43,6 +43,7 @@ export const routes = [
       },
     ],
   },
+  
   {
     title: "auth pages",
     layout: "auth",
@@ -52,7 +53,13 @@ export const routes = [
         name: "sign in",
         path: "/sign-in",
         element: <SignIn />,
-      },
+      }{
+        icon: <ArrowRightOnRectangleIcon {...icon} />,
+        name: "sign Out ",
+        path: "/sing Out",
+        element: <SignIn />,
+      },,
+      ,
       {
         icon: <UserPlusIcon {...icon} />,
         name: "sign up",
@@ -63,4 +70,9 @@ export const routes = [
   },
 ];
 
-export default routes;
+
+
+
+
+
+export default userRoutes;

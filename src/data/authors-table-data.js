@@ -1,3 +1,7 @@
+
+// data for users inside tamplate
+
+
 export const authorsTableData = [
   {
     img: "/img/team-2.jpeg",

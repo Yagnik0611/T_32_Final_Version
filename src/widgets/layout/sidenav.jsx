@@ -30,7 +30,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
         }`}
       >
         <Link to="/" className="flex items-center gap-4 py-6 px-8">
-          <Avatar src={brandImg} size="sm" />
+          <Avatar src="/public/img/UserProfile.png" size="base" />
           <Typography
             variant="h6"
             color={sidenavType === "dark" ? "white" : "blue-gray"}
@@ -97,10 +97,10 @@ export function Sidenav({ brandImg, brandName, routes }) {
     </aside>
   );
 }
-
+// In side menu Name of menu 
 Sidenav.defaultProps = {
   brandImg: "/img/logo-ct.png",
-  brandName: "Material Tailwind React",
+  brandName: "User Profile ",
 };
 
 Sidenav.propTypes = {

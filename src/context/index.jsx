@@ -2,7 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 
 export const MaterialTailwind = React.createContext(null);
-MaterialTailwind.displayName = "MaterialTailwindContext";
+MaterialTailwind.displayName = "CapstoneProject T32";
+// All code for changing the color and menu color of the whole tempelate
 
 export function reducer(state, action) {
   switch (action.type) {
