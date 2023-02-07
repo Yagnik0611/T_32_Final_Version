@@ -53,12 +53,12 @@ const icon = {
         name: "sign in",
         path: "/sign-in",
         element: <SignIn />,
-      }{
+      },{
         icon: <ArrowRightOnRectangleIcon {...icon} />,
         name: "sign Out ",
         path: "/sing Out",
         element: <SignIn />,
-      },,
+      }
       ,
       {
         icon: <UserPlusIcon {...icon} />,

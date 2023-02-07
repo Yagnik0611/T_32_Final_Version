@@ -26,8 +26,8 @@ function App() {
           </RequireAuth>
      } /> 
       
-      
-      <Route path="*" element={<Navigate to="/dashboard/home" replace />} />
+{/*       
+      <Route path="*" element={<Navigate to="/auth/sign-in" replace />} /> */}
     </Routes>
   );
 }

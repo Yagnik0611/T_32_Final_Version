@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import { useCallback } from "react";
 import { Avatar } from "@material-tailwind/react";
-import { useParams } from "react-router-dom";
+import { json, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import FormData from 'form-data';
 
+import axios from "axios";
 export function Settings() {
   // reacct state
   const [first_name, setfirst_name] = useState("");
@@ -25,8 +27,38 @@ export function Settings() {
   const [confirmPass, setConfirmPass] = useState("");
   const [passErr, setPassErr] = useState("");
   const userId = localStorage.getItem("userId");
-
+  const [fileName, setFileName] = useState("");
+  const [imageUrl, setImageUrl] = useState(null);
+  const onChangeFile = e => {
+    setFileName(e.target.files[0]);
+  }
   const fetchData = async () => {
+
+
+try{fetch(`http://localhost:3000/user/profile/image/${userId}`)
+.then(response => {
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  return response.blob();
+})
+.then(blob => {
+  const  profileImg = URL.createObjectURL(blob)
+  setImageUrl(profileImg)
+  console.log(profileImg)
+  // Use the image URL here
+})
+.catch(error => {
+  console.error(`An error occurred: ${error}`);
+});
+
+
+
+
+}catch (err) {
+  console.log(err.message);
+}
+
     try {
       const res = await fetch(`http://localhost:3000/user/${userId}`, {
         headers: {
@@ -88,8 +120,13 @@ export function Settings() {
 
   const navigate = useNavigate();
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+
+    // const formData = new FormData();
+    // formData.append("title",title)
     const userData = {
       first_name,
       last_name,
@@ -101,6 +138,7 @@ export function Settings() {
       address,
       zip_code,
       about_me,
+
     };
 
     try {
@@ -111,6 +149,36 @@ export function Settings() {
           Authorization: localStorage.getItem("token"),
         },
         body: JSON.stringify(userData),
+      });
+      console.log(res);
+      if (res.status == 200) {
+        setResponse("true");
+        {
+          setTimeout(() => {
+            setResponse("false");
+          }, 1500);
+        }
+      }
+
+      console.log(res.formData);
+      // alert('Saved successfully.');
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+  const updateImg = async (e) => {
+    e.preventDefault();
+
+
+    const formData = new FormData();
+    formData.append("profileImage", fileName)
+
+console.log(formData)
+    try {
+      const res = await fetch(`http://localhost:3000/user/update/profileimg/${userId}`, {
+        method: "PUT",
+       
+        body: formData
       });
       console.log(res);
       if (res.status == 200) {
@@ -199,14 +267,34 @@ export function Settings() {
       <div className="flex min-h-screen items-center justify-center rounded-xl bg-gray-100  p-6">
         <div className="max-w-screen- container mx-auto rounded-xl">
           <div>
-            <form onSubmit={handleSubmit}>
+          <form  onSubmit={updateImg} encType="multipart/form-data">
+
+<label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="file">Upload file</label>
+<input fileName ="profileImage"
+onChange={onChangeFile}
+class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file" />
+{/* <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p> */}
+<button
+  type="submit"
+  className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+>
+  Save
+</button>
+</form>
+           
               <div class="   grid  h-48 place-content-center ">
+              {imageUrl ? (
                 <img
-                  src="https://images.pexels.com/photos/2690323/pexels-photo-2690323.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-                  class="mx-auto mb-4 w-40 rounded-xl"
+                 src ={imageUrl}
+                  // src="https://images.pexels.com/photos/2690323/pexels-photo-2690323.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+                  class="mx-auto mb-3  w-40 rounded-xl"
                   alt="Avatar"
                 />
+                ) : (
+                  <p>Loading...</p>
+                )}
               </div>
+              <form onSubmit={handleSubmit}>
               <div className="mb-6 rounded-xl bg-white p-4 px-4 shadow-lg md:p-8">
                 <div className="grid grid-cols-2 gap-4 gap-y-2 text-sm lg:grid-cols-3">
                   <div className="lg:col-span-4">
