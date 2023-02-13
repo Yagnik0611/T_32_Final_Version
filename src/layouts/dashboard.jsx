@@ -21,15 +21,20 @@ import { useMaterialTailwindController, setOpenConfigurator } from "@/context";
 export function Dashboard() {
   const navigate = useNavigate();
   const [routes, setRoutes] = useState([]);
+  const[profileName,setProfileName] =useState("")
+  const[role,setRole] = useState("")
 
   useEffect(() => {
     const role = localStorage.getItem("role");
-
+     setRole(role)
     if (role === "user") {
+      setProfileName("User Profile")
       setRoutes(userRoutes);
     } else if (role === "admin") {
+      setProfileName("Admin Profile")
       setRoutes(adminRoutes);
     } else if (role === "client") {
+      setProfileName("Client Profile")
       setRoutes(clientRoutes);
     }
   }, []);
@@ -48,7 +53,7 @@ export function Dashboard() {
       <Sidenav
       
         routes={routes}
-        brandName={"admin"}
+        brandName={profileName}
         brandImg={
           sidenavType === "dark" ? "/img/logo-ct.png" : "/img/logo-ct-dark.png"
         }
@@ -71,25 +76,12 @@ export function Dashboard() {
 }
           {routes.map(
             ({ layout, pages }) =>
-              layout === "user" &&
+              layout === role  &&
               pages.map(({ path, element }) => (
                 <Route exact path={path} element={element} />
               ))
           )}
-            {/* {routes.map(
-            ({ layout, pages }) =>
-              layout === "client" &&
-              pages.map(({ path, element }) => (
-                <Route exact path={path} element={element} />
-              ))
-          )}
-            {routes.map(
-            ({ layout, pages }) =>
-              layout === "admin" &&
-              pages.map(({ path, element }) => (
-                <Route exact path={path} element={element} />
-              ))
-          )} */}
+       
         </Routes>
         <div className="text-blue-gray-600">
           <Footer />

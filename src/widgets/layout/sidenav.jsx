@@ -98,10 +98,10 @@ export function Sidenav({ brandImg, brandName, routes }) {
   );
 }
 // In side menu Name of menu 
-Sidenav.defaultProps = {
-  brandImg: "/img/logo-ct.png",
-  brandName: "User Profile ",
-};
+// Sidenav.defaultProps = {
+//   brandImg: "/img/logo-ct.png",
+//   brandName: "User Profile ",
+// };
 
 Sidenav.propTypes = {
   brandImg: PropTypes.string,

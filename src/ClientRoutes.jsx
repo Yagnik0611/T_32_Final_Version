@@ -5,8 +5,14 @@ import {
   BellIcon,
   ArrowRightOnRectangleIcon,
   UserPlusIcon,
+  
+  
 } from "@heroicons/react/24/solid";
-import {Home} from "@/pages/dashboards/client";
+import {Home, Profile, Settings, ViewBookings, ViewFeedback ,Park} from "@/pages/dashboards/client";
+import { AiOutlineSetting  } from "react-icons/ai";
+import { RiFeedbackLine } from "react-icons/ri";
+
+import { BsFilesAlt } from "react-icons/bs";
 import { SignIn,SignUp } from "@/pages/auth";
 
 const icon = {
@@ -23,24 +29,36 @@ const icon = {
         path: "/home",
         element: <Home />,
       },
-      // {
-      //   icon: <UserCircleIcon {...icon} />,
-      //   name: "profile",
-      //   path: "/profile",
-      //   element: <Profile />,
-      // },
-      // {
-      //   icon: <TableCellsIcon {...icon} />,
-      //   name: "feedback",
-      //   path: "/feedback",
-      //   element: <FeedBack />,
-      // },
-      // {
-      //   icon: <BellIcon {...icon} />,
-      //   name: "settings",
-      //   path: "/settings",
-      //   element: <Settings/>,
-      // },
+      {
+        icon: <UserCircleIcon {...icon} />,
+        name: "profile",
+        path: "/profile",
+        element: <Profile />,
+      },
+      {
+        icon: <TableCellsIcon {...icon} />,
+        name: "Bookings",
+        path: "/viewbookings",
+        element: <ViewBookings />,
+      },
+      {
+        icon: <AiOutlineSetting  size="25px" />,
+        name: "settings",
+        path: "/settings",
+        element: <Settings />,
+      },
+      {
+        icon: <RiFeedbackLine size="25px"/>,
+        name: "Feedback",
+        path: "/viewfeedback",
+        element: <ViewFeedback />,
+      },
+      {
+        icon: <BsFilesAlt  size="25px" />,
+        name: "Park",
+        path: "/park",
+        element: <Park />,
+      },
     ],
   },
   

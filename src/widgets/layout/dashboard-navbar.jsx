@@ -31,7 +31,16 @@ export function DashboardNavbar() {
   const { fixedNavbar, openSidenav } = controller;
   const { pathname } = useLocation();
   const [layout, page] = pathname.split("/").filter((el) => el !== "");
-
+  const logout = () => {
+    // Delete all cookies
+    document.cookie.split(";").forEach(function(c) {
+      document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+    });
+    
+    // Redirect to sign-in page
+    window.location.href = "../../auth/sign-in";
+  };
+  
   return (
     <Navbar
       color={fixedNavbar ? "white" : "transparent"}
@@ -88,10 +97,12 @@ export function DashboardNavbar() {
               variant="text"
               color="blue-gray"
               className="hidden items-center gap-1 px-4 xl:flex"
+              onClick={logout}
             >
               <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
-              Sign In
+              Log Out
             </Button>
+           
             <IconButton
               variant="text"
               color="blue-gray"
@@ -100,6 +111,9 @@ export function DashboardNavbar() {
               <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
             </IconButton>
           </Link>
+        
+         
+          
           <IconButton
             variant="text"
             color="blue-gray"

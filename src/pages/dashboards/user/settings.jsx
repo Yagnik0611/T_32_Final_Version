@@ -70,17 +70,17 @@ try{fetch(`http://localhost:3000/user/profile/image/${userId}`)
       if (res.status != 200) {
         //setTimeOut("true");
 
-        {
-          // setTimeout(() => {
-          //   Swal.fire({
-          //     title: "Time out ",
-          //     text: "Oops Something went Wrong Please Sign In Again! ",
-          //     icon: "error",
-          //     confirmButtonText: "ok",
-          //   });
-          //   navigate("../../auth/sign-up")("true");
-          // }, 1);
-        }
+        // {
+        //   setTimeout(() => {
+        //     Swal.fire({
+        //       title: "Time out ",
+        //       text: "Oops Something went Wrong Please Sign In Again! ",
+        //       icon: "error",
+        //       confirmButtonText: "ok",
+        //     });
+        //     navigate("../../auth/sign-in")("true");
+        // //   }, 1);
+        // }
       }
       const resp = await res.json();
       console.log(resp);
@@ -267,32 +267,33 @@ console.log(formData)
       <div className="flex min-h-screen items-center justify-center rounded-xl bg-gray-100  p-6">
         <div className="max-w-screen- container mx-auto rounded-xl">
           <div>
-          <form  onSubmit={updateImg} encType="multipart/form-data">
-
-<label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="file">Upload file</label>
-<input fileName ="profileImage"
-onChange={onChangeFile}
-class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file" />
-{/* <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p> */}
-<button
-  type="submit"
-  className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
->
-  Save
-</button>
-</form>
+        
            
-              <div class="   grid  h-48 place-content-center ">
-              {imageUrl ? (
-                <img
-                 src ={imageUrl}
+              <div  class="   grid  m-10  place-content-center ">
+              <form  onSubmit={updateImg} encType="multipart/form-data">
+                <label for="img">
+                {imageUrl ? (
+                  <img
+                  class="rounded-full w-36 h-36" 
+                  src ={imageUrl}
                   // src="https://images.pexels.com/photos/2690323/pexels-photo-2690323.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-                  class="mx-auto mb-3  w-40 rounded-xl"
-                  alt="Avatar"
-                />
+                  alt="avatar"
+
+                  />
                 ) : (
                   <p>Loading...</p>
                 )}
+                
+
+                <label class="block mb-2  ml-5 mt-2 text-base font-medium text-gray-900 dark:text-white" htmlFor="file">Upload Picture</label>
+<input fileName ="profileImage"
+onChange={onChangeFile}
+class="block invisible w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" name="img" id="img"  aria-describedby="file_input_help" type="file" />
+</label><button type="submit" 
+className="rounded ml-5 bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700">
+                            Update Pic
+                          </button>
+</form>
               </div>
               <form onSubmit={handleSubmit}>
               <div className="mb-6 rounded-xl bg-white p-4 px-4 shadow-lg md:p-8">
@@ -558,7 +559,7 @@ class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg curs
                         <div className="md:gap-50 md:grid md:grid-cols-3">
                           <label
                             className=" text-lg font-bold tracking-wide  text-gray-700 dark:text-gray-700"
-                            for="address"
+                            for="currentPassword"
                           >
                             Current password
                           </label>
@@ -585,7 +586,7 @@ class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg curs
 
                           <label
                             className=" text-lg font-bold tracking-wide  text-gray-700 dark:text-gray-700"
-                            for="address"
+                            for="password"
                           >
                             New password
                           </label>

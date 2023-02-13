@@ -17,12 +17,7 @@ const icon = {
   {
     layout: "user",
     pages: [
-      {
-        icon: <HomeIcon {...icon} />,
-        name: "User ",
-        path: "/home",
-        element: <Home />,
-      },
+     
       {
         icon: <UserCircleIcon {...icon} />,
         name: "profile",
@@ -53,13 +48,8 @@ const icon = {
         name: "sign in",
         path: "/sign-in",
         element: <SignIn />,
-      },{
-        icon: <ArrowRightOnRectangleIcon {...icon} />,
-        name: "sign Out ",
-        path: "/sing Out",
-        element: <SignIn />,
-      }
-      ,
+      },
+      
       {
         icon: <UserPlusIcon {...icon} />,
         name: "sign up",
