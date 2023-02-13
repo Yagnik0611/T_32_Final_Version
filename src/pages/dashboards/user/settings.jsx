@@ -70,18 +70,18 @@ try{fetch(`http://localhost:3000/user/profile/image/${userId}`)
       if (res.status != 200) {
         //setTimeOut("true");
 
-        // {
-        //   setTimeout(() => {
-        //     Swal.fire({
-        //       title: "Time out ",
-        //       text: "Oops Something went Wrong Please Sign In Again! ",
-        //       icon: "error",
-        //       confirmButtonText: "ok",
-        //     });
-        //     navigate("../../auth/sign-in")("true");
-        // //   }, 1);
-        // }
-      }
+        {
+          setTimeout(() => {
+            Swal.fire({
+              title: "Time out ",
+              text: "Oops Something went Wrong Please Sign In Again! ",
+              icon: "error",
+              confirmButtonText: "ok",
+            });
+            navigate("../../auth/sign-in")("true");
+          }, 1);
+        }}
+      
       const resp = await res.json();
       console.log(resp);
 

@@ -85,16 +85,16 @@ export function Profile() {
       if (res.status != 200) {
         setTimeOut("true");
 
-        // {  setTimeout(() => {
-        //   Swal.fire({
-        //     title: "Time out ",
-        //     text: "Login Time Out ! Login Again",
-        //     icon: "error",
-        //     confirmButtonText: "ok",
-        //   });
-        //   navigate("../../auth/sign-up")("true")
-        //    ("false") ;
-        // }, 1)}
+        {  setTimeout(() => {
+          Swal.fire({
+            title: "Time out ",
+            text: "Login Time Out ! Login Again",
+            icon: "error",
+            confirmButtonText: "ok",
+          });
+          navigate("../../auth/sign-up")("true")
+           ("false") ;
+        }, 1)}
       }
       const resp = await res.json();
       console.log(resp);
