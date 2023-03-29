@@ -5,7 +5,7 @@ import { json, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import FormData from 'form-data';
+import FormData from "form-data";
 
 import axios from "axios";
 export function Settings() {
@@ -28,39 +28,34 @@ export function Settings() {
   const [passErr, setPassErr] = useState("");
   const userId = localStorage.getItem("userId");
   const [fileName, setFileName] = useState("");
-  const [imageUrl, setImageUrl] = useState(null);
-  const onChangeFile = e => {
+  const [profileImg, setprofileImg] = useState(null);
+  const onChangeFile = (e) => {
     setFileName(e.target.files[0]);
-  }
+  };
   const fetchData = async () => {
-
-
-try{fetch(`http://localhost:3000/user/profile/image/${userId}`)
-.then(response => {
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-  return response.blob();
-})
-.then(blob => {
-  const  profileImg = URL.createObjectURL(blob)
-  setImageUrl(profileImg)
-  console.log(profileImg)
-  // Use the image URL here
-})
-.catch(error => {
-  console.error(`An error occurred: ${error}`);
-});
-
-
-
-
-}catch (err) {
-  console.log(err.message);
-}
+    try {
+      fetch(`http://localhost:3000/client/profile/image/${userId}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.blob();
+        })
+        .then((blob) => {
+          const profileImg = URL.createObjectURL(blob);
+          setprofileImg(profileImg);
+          console.log(profileImg);
+          // Use the image URL here
+        })
+        .catch((error) => {
+          console.error(`An error occurred: ${error}`);
+        });
+    } catch (err) {
+      console.log(err.message);
+    }
 
     try {
-      const res = await fetch(`http://localhost:3000/user/${userId}`, {
+      const res = await fetch(`http://localhost:3000/client/${userId}`, {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
@@ -69,18 +64,17 @@ try{fetch(`http://localhost:3000/user/profile/image/${userId}`)
       });
       if (res.status != 200) {
         //setTimeOut("true");
-
-        {
-          setTimeout(() => {
-            Swal.fire({
-              title: "Time out ",
-              text: "Oops Something went Wrong Please Sign In Again! ",
-              icon: "error",
-              confirmButtonText: "ok",
-            });
-            navigate("../../auth/sign-in")("true");
-          }, 1);
-        }
+        // {
+        //   setTimeout(() => {
+        //     Swal.fire({
+        //       title: "Time out ",
+        //       text: "Oops Something went Wrong Please Sign In Again! ",
+        //       icon: "error",
+        //       confirmButtonText: "ok",
+        //     });
+        //     navigate("../../auth/sign-in")("true");
+        //   }, 1);
+        // }
       }
       const resp = await res.json();
       console.log(resp);
@@ -120,10 +114,8 @@ try{fetch(`http://localhost:3000/user/profile/image/${userId}`)
 
   const navigate = useNavigate();
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
 
     // const formData = new FormData();
     // formData.append("title",title)
@@ -138,11 +130,10 @@ try{fetch(`http://localhost:3000/user/profile/image/${userId}`)
       address,
       zip_code,
       about_me,
-
     };
 
     try {
-      const res = await fetch(`http://localhost:3000/user/update/${userId}`, {
+      const res = await fetch(`http://localhost:3000/client/update/${userId}`, {
         method: "PUT",
         headers: {
           "content-type": "application/json",
@@ -169,17 +160,19 @@ try{fetch(`http://localhost:3000/user/profile/image/${userId}`)
   const updateImg = async (e) => {
     e.preventDefault();
 
-
     const formData = new FormData();
-    formData.append("profileImage", fileName)
+    formData.append("profileImage", fileName);
 
-console.log(formData)
+    console.log(formData);
     try {
-      const res = await fetch(`http://localhost:3000/user/update/profileimg/${userId}`, {
-        method: "PUT",
-       
-        body: formData
-      });
+      const res = await fetch(
+        `http://localhost:3000/client/update/profileimg/${userId}`,
+        {
+          method: "PUT",
+
+          body: formData,
+        }
+      );
       console.log(res);
       if (res.status == 200) {
         setResponse("true");
@@ -206,7 +199,7 @@ console.log(formData)
 
     try {
       const res = await fetch(
-        `http://localhost:3000/user/updatePassword/${userId}`,
+        `http://localhost:3000/client/updatePassword/${userId}`,
         {
           method: "PUT",
           headers: {
@@ -267,35 +260,45 @@ console.log(formData)
       <div className="flex min-h-screen items-center justify-center rounded-xl bg-gray-100  p-6">
         <div className="max-w-screen- container mx-auto rounded-xl">
           <div>
-        
-           
-              <div  class="   grid  m-10  place-content-center ">
-              <form  onSubmit={updateImg} encType="multipart/form-data">
+            <div class="   m-10  grid  place-content-center ">
+              <form onSubmit={updateImg} encType="multipart/form-data">
                 <label for="img">
-              {imageUrl ? (
-                  <img
-                  class="rounded-full w-36 h-36" 
-                  src ={imageUrl}
-                  // src="https://images.pexels.com/photos/2690323/pexels-photo-2690323.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-                  alt="avatar"
+                  {profileImg ? (
+                    <img
+                      class="h-36 w-36 rounded-full"
+                      src={profileImg}
+                      // src="https://images.pexels.com/photos/2690323/pexels-photo-2690323.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+                      alt="avatar"
+                    />
+                  ) : (
+                    <p>Loading...</p>
+                  )}
 
+                  <label
+                    class="mb-2 ml-5  mt-2 block text-base font-medium text-gray-900 dark:text-white"
+                    htmlFor="file"
+                  >
+                    Upload Picture
+                  </label>
+                  <input
+                    fileName="profileImage"
+                    onChange={onChangeFile}
+                    class="invisible block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
+                    name="img"
+                    id="img"
+                    aria-describedby="file_input_help"
+                    type="file"
                   />
-                ) : (
-                  <p>Loading...</p>
-                )}
-                
-
-<label class="block mb-2  ml-5 mt-2 text-base font-medium text-gray-900 dark:text-white" htmlFor="file">Upload Picture</label>
-<input fileName ="profileImage"
-onChange={onChangeFile}
-class="block invisible w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" name="img" id="img"  aria-describedby="file_input_help" type="file" />
-</label><button type="submit" 
-className="rounded ml-5 bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700">
-                            Update Pic
-                          </button>
-</form>
-              </div>
-              <form onSubmit={handleSubmit}>
+                </label>
+                <button
+                  type="submit"
+                  className="ml-5 rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+                >
+                  Update Pic
+                </button>
+              </form>
+            </div>
+            <form onSubmit={handleSubmit}>
               <div className="mb-6 rounded-xl bg-white p-4 px-4 shadow-lg md:p-8">
                 <div className="grid grid-cols-2 gap-4 gap-y-2 text-sm lg:grid-cols-3">
                   <div className="lg:col-span-4">

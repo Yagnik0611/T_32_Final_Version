@@ -34,7 +34,7 @@ export function DashboardNavbar() {
   const logout = () => {
     // Delete all cookies
     document.cookie.split(";").forEach(function(c) {
-      document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+      document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=../../auth/sign-in");
     });
     
     // Redirect to sign-in page

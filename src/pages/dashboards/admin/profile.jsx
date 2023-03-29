@@ -49,7 +49,8 @@ export function Profile() {
   const [response,setResponse] = useState("");
   const [timeOut,setTimeOut] = useState("");
   const [showBooking,setShowBooking] = useState("")
-  const [imageUrl, setImageUrl] = useState(null);
+  const [profileImg, setprofileImg] = useState(null);
+  const [about_me,setabout_me] = useState("")
 const onhandleClose  = () => setShowBooking(false)
 console.log(showBooking)
   const userId =  localStorage.getItem("userId");
@@ -64,7 +65,7 @@ console.log(showBooking)
 })
 .then(blob => {
   const  profileImg = URL.createObjectURL(blob)
-  setImageUrl(profileImg)
+  setprofileImg(profileImg)
   console.log(profileImg)
   // Use the image URL here
 })
@@ -108,7 +109,7 @@ setTimeOut("true");
         const resp = await res.json();
         console.log(resp)
         
-        const {first_name, last_name, gender, email, address, city, country, province, zip_code} = resp;
+        const {first_name, last_name, gender, email, address, city, country, province, zip_code,about_me} = resp;
         setfirst_name(first_name);
         setlast_name(last_name);
         setgender(gender);
@@ -118,6 +119,7 @@ setTimeOut("true");
         setcountry(country);
         setprovince(province);
         setzip_code(zip_code);
+        setabout_me(about_me);
 
     } catch (err) {
         console.log(err.message);
@@ -140,23 +142,23 @@ useEffect(() => {
           <div className="px-6">
             <div className="flex flex-wrap justify-center">
               <div className="flex w-full justify-center px-4 lg:order-2 lg:w-3/12">
-                <div className="relative">
-                {imageUrl ? (
-                <Avatar
-                class=" w-30 rounded"
-                src ={imageUrl}
+              <div className="relative">
+                {profileImg ? (
+                <img
+                class="rounded-full w-36 h-36" 
+                src ={profileImg}
                 // src="https://images.pexels.com/photos/2690323/pexels-photo-2690323.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
                 alt="avatar"
-                size="xxl"
+              
               />
                 ) : (
                   <img
-                    class="rounded-full w-36 h-36" 
-                   
-                    src="../../../data/b.jpg"
-                    alt="avatar"
-                  
-                  />
+                  class="rounded-full w-36 h-36" 
+                 
+                  src="../../../data/b.jpg"
+                  alt="avatar"
+                
+                />
                 )}
                   
                 </div>
@@ -216,101 +218,18 @@ useEffect(() => {
             <div className="border-blueGray-200 mt-10 border-t py-10 text-center">
               <div className="flex flex-wrap justify-center">
                 <div className="w-full px-4 lg:w-9/12">
-                  <p className="text-blueGray-700 mb-4 text-lg leading-relaxed">
-                    An artist of considerable range, Jenna the name taken by
-                    Melbourne-raised, Brooklyn-based Nick Murphy writes,
-                    performs and records all of his own music, giving it a warm,
-                    intimate feel with a solid groove structure. An artist of
-                    considerable range.
-                  </p>
+                {about_me   ? (
+                              <p className="text-blueGray-700 mb-4 text-lg leading-relaxed">
+                              {about_me}
+                            </p>
+                ) : (
+                  <p>Hello my name is {first_name + " " + last_name}</p>
+                )}
                 </div>
               </div>
             </div>
           </div>
-          <div className="container mx-auto px-4">
-            <body>
-              <div class="rounded-t border-b bg-gradient-to-r from-gray-600 via-gray-500 to-gray-600 px-4 py-5 sm:px-6">
-                <h3 class="text-lg font-medium leading-6 text-white">
-                  Booking List
-                </h3>
-              </div>
-              <div class="overflow-hidden bg-white shadow sm:rounded-md">
-                <ul class="divide-y divide-gray-200">
-                  <li>
-                    <a class="block hover:bg-gray-50">
-                      <div class="px-4 py-4 sm:px-6">
-                        <div class="flex items-center justify-between">
-                          <p class="truncate text-sm font-thin text-gray-700">
-                            Increase sales by 10% year over year
-                          </p>
-
-                          <button
-                            onClick={() => setShowBooking(true)}
-                            class="rounded-full  bg-gray-100     py-2 px-4 font-semibold outline-none hover:bg-gray-200  focus:outline-none"
-                          >
-                            View Details
-                          </button>
-                        </div>
-                        <div class="mt-2 sm:flex sm:justify-between">
-                          <div class="sm:flex">
-                            <p class="flex items-center text-sm font-light text-gray-500">
-                              <time datetime="2020-01-07">January 7, 2020</time>
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-
-                  <li>
-                    <a class="block hover:bg-gray-50">
-                      <div class="px-4 py-4 sm:px-6">
-                        <div class="flex items-center justify-between">
-                          <p class="truncate text-sm font-thin text-gray-700">
-                            Increase newsletter subscribers by 500
-                          </p>
-
-                          <button class="rounded-full  bg-gray-100   py-2 px-4 font-semibold outline-none hover:bg-gray-200  focus:outline-none">
-                            View Details
-                          </button>
-                        </div>
-                        <div class="mt-2 sm:flex sm:justify-between">
-                          <div class="sm:flex">
-                            <p class="flex items-center text-sm font-light text-gray-500">
-                              <time datetime="2020-01-07">January 7, 2020</time>
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-
-                  <li>
-                    <a class="block hover:bg-gray-50">
-                      <div class="px-4 py-4 sm:px-6">
-                        <div class="flex items-center justify-between">
-                          <p class="truncate text-sm font-thin text-gray-700">
-                            Increase customer satisfaction rating by 10 points
-                          </p>
-
-                          <button class="rounded-full  bg-gray-100  py-2 px-4 font-semibold outline-none hover:bg-gray-200  focus:outline-none">
-                            View Details
-                          </button>
-                        </div>
-                        <div class="mt-2 sm:flex sm:justify-between">
-                          <div class="sm:flex">
-                            <p class="flex items-center text-sm font-light text-gray-500">
-                              <time datetime="2020-01-07">January 7, 2020</time>
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </body>
-          </div>
+        
         </CardBody>
       </Card>
     </>

@@ -66,7 +66,7 @@ export  function SignIn() {
           localStorage.setItem("userId", username);
           localStorage.setItem("role",role)
           console.log(   localStorage.getItem("role"))
-            navigate("../../user/home")
+            navigate("../../user/settings")
          
         
       } else {

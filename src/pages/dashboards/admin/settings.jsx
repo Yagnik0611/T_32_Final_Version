@@ -269,29 +269,28 @@ console.log(formData)
           <div>
         
            
-              <div  class="   grid  m-10  place-content-center ">
+          <div  class="   grid  m-10  place-content-center ">
               <form  onSubmit={updateImg} encType="multipart/form-data">
                 <label for="img">
-              {imageUrl ? (
-                <Avatar
-                class="rounded "
-                src ={imageUrl}
-                // src="https://images.pexels.com/photos/2690323/pexels-photo-2690323.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-                alt="avatar"
-                size="xxl"
-                
-              />
+                {imageUrl ? (
+                  <img
+                  class="rounded-full w-36 h-36" 
+                  src ={imageUrl}
+                  // src="https://images.pexels.com/photos/2690323/pexels-photo-2690323.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+                  alt="avatar"
+
+                  />
                 ) : (
                   <p>Loading...</p>
                 )}
                 
 
-<label class="block mb-2 mt-2 text-base font-medium text-gray-900 dark:text-white" htmlFor="file">Upload Picture</label>
+                <label class="block mb-2  ml-5 mt-2 text-base font-medium text-gray-900 dark:text-white" htmlFor="file">Upload Picture</label>
 <input fileName ="profileImage"
 onChange={onChangeFile}
 class="block invisible w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" name="img" id="img"  aria-describedby="file_input_help" type="file" />
 </label><button type="submit" 
-className="rounded ml-1 bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700">
+className="rounded ml-5 bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700">
                             Update Pic
                           </button>
 </form>

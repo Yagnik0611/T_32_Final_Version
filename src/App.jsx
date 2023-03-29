@@ -1,13 +1,18 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Dashboard, Auth } from "@/layouts";
 import { RequireAuth } from 'react-auth-kit'
+import EditHome from "./pages/dashboards/client/EditParkPages/EditHome";
 function App() {
   return (
 
     <Routes>
 
       <Route path="/auth/*" element={<Auth />} />
-      
+        
+          <Route path="/Client/EditHome" element={<EditHome />} />
+          {/* <Route path="/EditFacilityList" element={<EditFacilityList />} />
+          <Route path="/ClientEventList" element={<ClientEventList />} />
+          <Route path="/ClientMap" element={<ClientMap />} /> */}
      <Route path="/user/*" 
      element={
       <RequireAuth loginPath={'/auth/sign-in'}>

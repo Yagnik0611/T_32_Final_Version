@@ -6,7 +6,7 @@ import {
   ArrowRightOnRectangleIcon,
   UserPlusIcon,
 } from "@heroicons/react/24/solid";
-import { Home, Profile, Settings, FeedBack } from "@/pages/dashboards/user";
+import {  Profile, Settings, FeedBack } from "@/pages/dashboards/user";
 import { SignIn,SignUp } from "@/pages/auth";
 
 const icon = {

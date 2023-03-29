@@ -49,13 +49,14 @@ export function Profile() {
   const [response,setResponse] = useState("");
   const [timeOut,setTimeOut] = useState("");
   const [showBooking,setShowBooking] = useState("")
-  const [imageUrl, setImageUrl] = useState(null);
+  const [profileImg, setprofileImg] = useState(null);
+  const [about_me,setabout_me] = useState("")
 const onhandleClose  = () => setShowBooking(false)
 console.log(showBooking)
   const userId =  localStorage.getItem("userId");
     
   const fetchData = async () => {
-    try{fetch(`http://localhost:3000/user/profile/image/${userId}`)
+    try{fetch(`http://localhost:3000/client/profile/image/${userId}`)
 .then(response => {
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
@@ -64,7 +65,7 @@ console.log(showBooking)
 })
 .then(blob => {
   const  profileImg = URL.createObjectURL(blob)
-  setImageUrl(profileImg)
+  setprofileImg(profileImg)
   console.log(profileImg)
   // Use the image URL here
 })
@@ -79,7 +80,7 @@ console.log(showBooking)
   console.log(err.message);
 }
     try {
-        const res = await fetch(`http://localhost:3000/user/${userId}`, {
+        const res = await fetch(`http://localhost:3000/client/${userId}`, {
             headers: {
                 "Authorization": localStorage.getItem("token"),
             },
@@ -108,7 +109,7 @@ setTimeOut("true");
         const resp = await res.json();
         console.log(resp)
         
-        const {first_name, last_name, gender, email, address, city, country, province, zip_code} = resp;
+        const {first_name, last_name, gender, email, address, city, country, province, zip_code,about_me} = resp;
         setfirst_name(first_name);
         setlast_name(last_name);
         setgender(gender);
@@ -118,6 +119,7 @@ setTimeOut("true");
         setcountry(country);
         setprovince(province);
         setzip_code(zip_code);
+        setabout_me(about_me);
 
     } catch (err) {
         console.log(err.message);
@@ -141,10 +143,10 @@ useEffect(() => {
             <div className="flex flex-wrap justify-center">
               <div className="flex w-full justify-center px-4 lg:order-2 lg:w-3/12">
                 <div className="relative">
-                {imageUrl ? (
+                {profileImg ? (
                 <img
                 class="rounded-full w-36 h-36" 
-                src ={imageUrl}
+                src ={profileImg}
                 // src="https://images.pexels.com/photos/2690323/pexels-photo-2690323.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
                 alt="avatar"
               
@@ -166,7 +168,7 @@ useEffect(() => {
                 <div className="mt-32 py-6 px-3 sm:mt-0">
                   <button
                  
-                    className="mb-1 rounded bg-pink-500 px-4 py-2 text-xs font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none active:bg-pink-600 sm:mr-2"
+                    className="mb-1 rounded bg-pink-500 px-4 py-2 text-s font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none active:bg-pink-600 sm:mr-2"
                     type="button"
                     onClick={handleClick }
                   >
@@ -217,17 +219,22 @@ useEffect(() => {
             <div className="border-blueGray-200 mt-10 border-t py-10 text-center">
               <div className="flex flex-wrap justify-center">
                 <div className="w-full px-4 lg:w-9/12">
-                  <p className="text-blueGray-700 mb-4 text-lg leading-relaxed">
-                    An artist of considerable range, Jenna the name taken by
-                    Melbourne-raised, Brooklyn-based Nick Murphy writes,
-                    performs and records all of his own music, giving it a warm,
-                    intimate feel with a solid groove structure. An artist of
-                    considerable range.
-                  </p>
+                {about_me   ? (
+                              <p className="text-blueGray-700 mb-4 text-lg leading-relaxed">
+                              {about_me}
+                            </p>
+                ) : (
+                  <p>Hello my name is {first_name + " " + last_name}</p>
+                )}
+                  
                 </div>
+     
               </div>
+   
             </div>
+ 
           </div>
+          
           {/* <div className="container mx-auto px-4">
             <body>
               <div class="rounded-t border-b bg-gradient-to-r from-gray-600 via-gray-500 to-gray-600 px-4 py-5 sm:px-6">
@@ -314,6 +321,30 @@ useEffect(() => {
           </div> */}
         </CardBody>
       </Card>
+      <Card className="mx-3  mb-6 lg:mx-4">
+  <CardHeader
+    floated={false}
+    shadow={false}
+    color="transparent"
+    className="ml-5 flex items-center justify-between pl-10 pr-10 p-5"
+  >
+    <div>
+      <Typography variant="h6" color="blue-gray" className="mb-1 text-m">
+        View My Park 
+      </Typography>
+     
+        
+     
+    </div>
+    <button 
+      className="mb-1 rounded bg-pink-500 px-4 py-2 text-s font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none active:bg-pink-600 sm:mr-2"
+      type="button"
+      onClick={() => window.location.href='/client/EditHome'}
+    >
+      Create
+    </button>
+  </CardHeader>
+</Card>
     </>
   );
 }

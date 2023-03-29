@@ -48,7 +48,8 @@ export function Profile() {
   const [response, setResponse] = useState("");
   const [timeOut, setTimeOut] = useState("");
   const [showBooking, setShowBooking] = useState("");
-  const [imageUrl, setImageUrl] = useState(null);
+  const [profileImg, setprofileImg] = useState(null);
+  const [about_me,setabout_me] = useState("")
   const onhandleClose = () => setShowBooking(false);
   console.log(showBooking);
   const userId = localStorage.getItem("userId");
@@ -64,7 +65,7 @@ export function Profile() {
         })
         .then((blob) => {
           const profileImg = URL.createObjectURL(blob);
-          setImageUrl(profileImg);
+          setprofileImg(profileImg);
           console.log(profileImg);
           // Use the image URL here
         })
@@ -109,6 +110,7 @@ export function Profile() {
         country,
         province,
         zip_code,
+        about_me
       } = resp;
       setfirst_name(first_name);
       setlast_name(last_name);
@@ -119,6 +121,7 @@ export function Profile() {
       setcountry(country);
       setprovince(province);
       setzip_code(zip_code);
+      setabout_me(about_me);
     } catch (err) {
       console.log(err.message);
     }
@@ -142,10 +145,10 @@ export function Profile() {
 
                <div className="flex w-full justify-center px-4 lg:order-2 lg:w-3/12">
                 <div className="relative">
-                {imageUrl ? (
+                {profileImg ? (
                 <img
                 class="rounded-full w-36 h-36" 
-                src ={imageUrl}
+                src ={profileImg}
                 // src="https://images.pexels.com/photos/2690323/pexels-photo-2690323.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
                 alt="avatar"
               
@@ -223,13 +226,13 @@ export function Profile() {
             <div className="border-blueGray-200 mt-10 border-t py-10 text-center">
               <div className="flex flex-wrap justify-center">
                 <div className="w-full px-4 lg:w-9/12">
-                  <p className="text-blueGray-700 mb-4 text-lg leading-relaxed">
-                    An artist of considerable range, Jenna the name taken by
-                    Melbourne-raised, Brooklyn-based Nick Murphy writes,
-                    performs and records all of his own music, giving it a warm,
-                    intimate feel with a solid groove structure. An artist of
-                    considerable range.
-                  </p>
+                {about_me   ? (
+                              <p className="text-blueGray-700 mb-4 text-lg leading-relaxed">
+                              {about_me}
+                            </p>
+                ) : (
+                  <p>Hello my name is {first_name + " " + last_name}</p>
+                )}
                 </div>
               </div>
             </div>
