@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import BookingForm from "../pages/BookingForm";
+import React, { useEffect,useState } from "react";
+// import BookingForm from "../pages/BookingForm";
 import AddFacilityForm from "./AddFacilityForm";
 import EditFacilityModal from "./EditFacilityModal";
-
+import FormData from "form-data";
 const mockData = [
   {
     id: 1,
@@ -86,11 +86,36 @@ function ClientFacilityList() {
   const [searchText, setSearchText] = useState("");
   const [itemsPerPage] = useState(3);
   const [currentPage, setCurrentPage] = useState(1);
-  const [facilities, setFacilities] = useState(mockData);
+  const [facilities, setFacilities] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [facilityToEdit, setFacilityToEdit] = useState({});
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [facilityToDelete, setFacilityToDelete] = useState(null);
+  useEffect(() => {
+
+    async function fetchData() {
+    
+      
+      
+      try {
+        const response = await fetch('http://localhost:3000/park/64271153a725c6be244a9e94/facImg', {
+          method: 'GET',
+          mode: 'cors',
+        });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+       setFacilities(data)
+       
+ 
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchData();
+  }, []);
+  
 
   const handleEdit = (facility) => {
     setFacilityToEdit(facility);
@@ -133,12 +158,44 @@ function ClientFacilityList() {
       facility.location.toLowerCase().includes(searchText.toLowerCase())
     );
   });
-
+ 
   const addFacility = (newFacility) => {
     setFacilities([
       ...facilities,
       { ...newFacility, id: facilities.length + 1 },
     ]);
+console.log(newFacility)
+    const formData = new FormData();
+
+   
+// Append new facility fields to FormData
+formData.append('name', newFacility.name);
+formData.append('description', newFacility.description);
+formData.append('capacity', newFacility.capacity);
+formData.append('image', newFacility.imageFile);
+formData.append('visitors[max]', newFacility.visitors.max);
+formData.append('visitors[min]', newFacility.visitors.min);
+
+// Append equipment fields to FormData
+   newFacility.equipment.forEach((equipment) => {
+  formData.append('equipment[name][]', equipment.name);
+  formData.append('equipment[quantity][]', equipment.quantity);
+  formData.append('equipment[description][]', equipment.description);
+ 
+});
+
+console.log(formData)
+
+    // Make a POST request to the backend API to save the updated home data
+    fetch('http://localhost:3000/park/64271153a725c6be244a9e94/facilities', {
+      method: 'PUT',
+     
+      body: formData,
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error(error));
+  
   };
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -172,7 +229,8 @@ function ClientFacilityList() {
 
   return (
     <div>
-      <BookingForm visible={bookingForm} onClose={onClose} />
+     
+      {/* <BookingForm visible={bookingForm} onClose={onClose} /> */}
       {/* nav bar here */}
       <div className="bg-white">
         <div className="h-screen bg-gray-100 pt-20">
@@ -192,13 +250,16 @@ function ClientFacilityList() {
                 />
               </div>
               {currentItems.map((data) => {
+                  {  console.log(data)}
                 return (
                   <div
                     key={data.id}
                     className="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start"
                   >
                     <img
-                      src={data.image}
+                
+                src={`http://localhost:3000/${data.image}`}
+                      
                       alt="product-image"
                       className="w-full rounded-lg sm:w-40"
                     />
@@ -296,15 +357,9 @@ function ClientFacilityList() {
             </div>
           </div>
         </div>
-        <footer className="bg-gray-900 p-10 text-white text-center">
-          <p>
-            &copy; Copyright 2022, All Rights Reserved by George Brown Company
-          </p>
-          <p>General Information</p>
-          <p>Phone:(807)938-6534</p>
-          <p>Address:Box 730, 479 Government Street Dryden, ONP8N 2Z4</p>
-        </footer>
+       
       </div>
+      
       {showModal && (
         <div className="fixed z-10 inset-0 overflow-y-auto">
           <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">

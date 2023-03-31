@@ -43,6 +43,7 @@ function AddFacilityForm({ onAdd }) {
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
+  
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -92,7 +93,7 @@ function AddFacilityForm({ onAdd }) {
     setFacilityData({
       name: "",
       location: "",
-      image: "",
+      image: null,
       description: "",
       capacity: "",
       equipment: [],

@@ -32,10 +32,12 @@ import { platformSettingsData, conversationsData, projectsData } from "@/data";
 export function Profile() {
 
   const navigate = useNavigate();
+
   function handleClick() {
     navigate("../settings");
     console.log("hello")
   }
+
   const [first_name, setfirst_name] = useState("");
   const [last_name, setlast_name] = useState("");
   const [email, setUserEmail] = useState("");
@@ -51,8 +53,8 @@ export function Profile() {
   const [showBooking,setShowBooking] = useState("")
   const [profileImg, setprofileImg] = useState(null);
   const [about_me,setabout_me] = useState("")
-const onhandleClose  = () => setShowBooking(false)
-console.log(showBooking)
+  const onhandleClose  = () => setShowBooking(false)
+  console.log(showBooking)
   const userId =  localStorage.getItem("userId");
     
   const fetchData = async () => {
@@ -341,7 +343,7 @@ useEffect(() => {
       type="button"
       onClick={() => window.location.href='/client/EditHome'}
     >
-      Create
+      view
     </button>
   </CardHeader>
 </Card>

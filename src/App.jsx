@@ -2,6 +2,8 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { Dashboard, Auth } from "@/layouts";
 import { RequireAuth } from 'react-auth-kit'
 import EditHome from "./pages/dashboards/client/EditParkPages/EditHome";
+import ClientEventList from "./pages/dashboards/client/EditParkPages/ClientEventList";
+import ClientFacilityList from "./pages/dashboards/client/EditParkPages/ClientFacilityList";
 function App() {
   return (
 
@@ -10,7 +12,9 @@ function App() {
       <Route path="/auth/*" element={<Auth />} />
         
           <Route path="/Client/EditHome" element={<EditHome />} />
-          {/* <Route path="/EditFacilityList" element={<EditFacilityList />} />
+          <Route path="/Client/EditFacilityList" element={<ClientFacilityList />}/>
+          <Route path="/Client/ClientEventList" element={<ClientEventList />}/>
+          {/* } />
           <Route path="/ClientEventList" element={<ClientEventList />} />
           <Route path="/ClientMap" element={<ClientMap />} /> */}
      <Route path="/user/*" 

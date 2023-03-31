@@ -4,15 +4,16 @@ import { parse } from "date-fns";
 const AddEventForm = ({ onEventSubmit }) => {
   const [eventData, setEventData] = useState({
     name: "",
-    month: "",
-    date: "",
-    startTime: "",
-    endTime: "",
-    location: "",
-    description: "",
-    image: "",
-    totalTickets: "",
-    ticketsLeft: "",
+  startDate: "",
+  endDate: "",
+  startTime:"",
+  endTime:"",
+  numTickets: "",
+  location: "",
+  description: "",
+  image: null,
+  imageFile: null
+ 
   });
 
   const handleChange = (e) => {
@@ -21,7 +22,19 @@ const AddEventForm = ({ onEventSubmit }) => {
 
   const handleImageChange = (e) => {
     const imageFile = e.target.files[0];
-    setEventData({ ...eventData, image: imageFile });
+    if (imageFile) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+       
+        setEventData({
+          ...eventData,
+          image: reader.result,
+          imageFile: imageFile,
+        });
+      };
+      reader.readAsDataURL(imageFile);
+    }
+  
 
     // Create a URL object for the selected image file
     const imageUrl = URL.createObjectURL(imageFile);
@@ -57,153 +70,193 @@ const AddEventForm = ({ onEventSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (validateInput()) {
+   
       onEventSubmit(eventData);
       setEventData({
         name: "",
-        month: "",
-        date: "",
-        startTime: "",
-        endTime: "",
+        startDate: "",
+        endDate: "",
+        startTime:"",
+        endTime:"",
+        numTickets: "",
         location: "",
         description: "",
-        image: "",
+        image: null,
+        imageFile: null
+       
       });
-    } else {
-      alert("Please fill in all fields correctly.");
-    }
+    
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-5">
-      <h2 className="text-xl font-bold mb-4">Add Event</h2>
-      <label className="block mb-2">
-        Month
-        <select
-          name="month"
-          value={eventData.month}
-          onChange={handleChange}
-          className="border border-gray-300 p-2 w-full mt-1"
-        >
-          <option value="">Select a month</option>
-          <option value="Jan">Jan</option>
-          <option value="Feb">Feb</option>
-          <option value="Mar">Mar</option>
-          <option value="Apr">Apr</option>
-          <option value="May">May</option>
-          <option value="Jun">Jun</option>
-          <option value="Jul">Jul</option>
-          <option value="Aug">Aug</option>
-          <option value="Sep">Sep</option>
-          <option value="Oct">Oct</option>
-          <option value="Nov">Nov</option>
-          <option value="Dec">Dec</option>
-        </select>
-      </label>
 
-      <label className="block mb-2">
-        Date
-        <input
-          type="number"
-          min="1"
-          max="31"
-          name="date"
-          value={eventData.date}
-          onChange={handleChange}
-          className="border border-gray-300 p-2 w-full mt-1"
-        />
-      </label>
-      <label className="block mb-2">
-        Name
-        <input
-          type="text"
-          name="name"
-          value={eventData.name}
-          onChange={handleChange}
-          className="border border-gray-300 p-2 w-full mt-1"
-        />
-      </label>
-      <label className="block mb-2">
-        Start Time
-        <input
-          type="time"
-          name="startTime"
-          value={eventData.startTime}
-          onChange={handleChange}
-          className="border border-gray-300 p-2 w-full mt-1"
-        />
-      </label>
-      <label className="block mb-2">
-        End Time
-        <input
-          type="time"
-          name="endTime"
-          value={eventData.endTime}
-          onChange={handleChange}
-          className="border border-gray-300 p-2 w-full mt-1"
-        />
-      </label>
-      <label className="block mb-2">
-        Location
+      <form onSubmit={handleSubmit} className="bg-white p-4 ">
+      <div class="-mx-3 flex flex-wrap">
+        <div class="w-full px-3 sm:w-1/2">
+          <div class="mb-5">
+            <label
+              for="fName"
+              class="mb-3 block text-base font-medium text-[#07074D]"
+            >
+               Name
+            </label>
+            <input
+             type="text"
+             name="name"
+             value={eventData.name}
+             onChange={handleChange}
+              class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+            />
+          </div>
+        </div>
+        <div class="w-full px-3 sm:w-1/2">
+          <div class="mb-5">
+            <label
+             
+              class="mb-3 block text-base font-medium text-[#07074D]"
+            >
+               Total Tickets
+            </label>
+            <input
+             type="number"
+             name="numTickets"
+             value={eventData.numTickets}
+             onChange={handleChange}
+              class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+            />
+          </div>
+        </div>
+      </div>
+   
+
+      <div class="-mx-3 flex flex-wrap">
+        <div class="w-full px-3 sm:w-1/2">
+          <div class="mb-5">
+            <label
+              for="date"
+              class="mb-3 block text-base font-medium text-[#07074D]"
+            >
+              Start Date
+            </label>
+            <input
+              type="date"
+              name="startDate"
+              value={eventData.startDate}
+              onChange={handleChange}
+             
+              class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+            />
+          </div>
+        </div>
+        <div class="w-full px-3 sm:w-1/2">
+          <div class="mb-5">
+            <label
+             
+              class="mb-3 block text-base font-medium text-[#07074D]"
+            >
+              End Date
+            </label>
+            <input
+              type="date"
+              name="endDate"
+              value={eventData.endDate}
+              onChange={handleChange}
+             
+              class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="-mx-3 flex flex-wrap">
+      <div class="w-full px-3 sm:w-1/2">
+          <div class="mb-5">
+            <label
+            
+              class="mb-3 block text-base font-medium text-[#07074D]"
+            >
+              Start Time
+            </label>
+            <input
+              type="time"
+              name="startTime"
+              value={eventData.startTime}
+              onChange={handleChange}
+              class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+            />
+          </div>
+        </div>
+        <div class="w-full px-3 sm:w-1/2">
+          <div class="mb-5">
+            <label
+              for="time"
+              class="mb-3 block text-base font-medium text-[#07074D]"
+            >
+              End Time
+            </label>
+            <input
+              type="time"
+              name="endTime"
+              value={eventData.endTime}
+              onChange={handleChange}
+              class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="mb-5">
+        <label
+         for ="location"
+          class="mb-3 block text-base font-medium text-[#07074D]"
+        >
+          Location
+        </label>
         <input
           type="text"
           name="location"
+        
           value={eventData.location}
           onChange={handleChange}
-          className="border border-gray-300 p-2 w-full mt-1"
+          class="w-full appearance-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
         />
-      </label>
-      <label className="block mb-4">
-        Description
+      </div>
+      <div class="mb-5">
+        <label
+         for ="description"
+          class="mb-3 block text-base font-medium text-[#07074D]"
+        >
+          Description
+        </label>
         <textarea
+          type="text"
           name="description"
+         rows={2}
           value={eventData.description}
           onChange={handleChange}
-          className="border border-gray-300 p-2 w-full mt-1"
-          rows="4"
-        ></textarea>
-      </label>
-      <label className="block mb-2">
-        Total Tickets
-        <input
-          type="number"
-          min="0"
-          name="totalTickets"
-          value={eventData.totalTickets}
-          onChange={handleChange}
-          className="border border-gray-300 p-2 w-full mt-1"
+          class="w-full appearance-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
         />
-      </label>
-      <label className="block mb-2">
-        Tickets Left
+      </div>
+
+      <label className="mb-3 block text-base font-medium text-[#07074D]">
+        Image
         <input
-          type="number"
-          min="0"
-          name="ticketsLeft"
-          value={eventData.ticketsLeft}
-          onChange={handleChange}
-          className="border border-gray-300 p-2 w-full mt-1"
+          type="file"
+          name="image"
+          onChange={handleImageChange}
+          class="w-full appearance-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
         />
+        {/* <img id="image-preview" src="" alt="" /> */}
       </label>
-      <label className="block mb-2">
-  Image
-  <input
-    type="file"
-    name="image"
-    onChange={handleImageChange}
-    className="border border-gray-300 p-2 w-full mt-1"
-  />
-  <img id="image-preview" src="" alt="" />
-</label>
-
-
-      <button
-        type="submit"
-        className="bg-blue-500 text-white font-bold px-4 py-2 rounded"
-      >
-        Add Event
-      </button>
+      <div>
+        <button
+          class="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none"
+        >
+          Submit
+        </button>
+      </div>
     </form>
+   
+    
   );
 };
 

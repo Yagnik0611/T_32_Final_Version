@@ -7,7 +7,19 @@ import FormData from "form-data";
 const userId = localStorage.getItem("userId");
 const EditHome = () => {
   const onChangeFile = (e) => {
+    const file= e.target.files[0]
+     
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setBackImgFile(file);
+      };
+      reader.readAsDataURL(file);
+    }
+    console.log(backImgFile)
     setbackgroundImg(e.target.files[0]);
+  
+
   };
   const [Park, setPark] = useState({});
   const [homeData, setHomeData] = useState({
@@ -16,7 +28,7 @@ const EditHome = () => {
     events: "",
     info: [],
     hours: [],
-    backgroundImg:""
+    backgroundImg:null
   });
   
   const [modalOpen, setModalOpen] = useState(false);
@@ -27,11 +39,35 @@ const EditHome = () => {
   const [newHours, setNewHours] = useState([]);
   const [activeSection, setActiveSection] = useState(0);
   const [backgroundImg, setbackgroundImg] = useState(null);
- 
+  const [backImgFile, setBackImgFile] = useState(null);
   useEffect(() => {
     async function fetchData() {
+    
+        try {
+          fetch(`http://localhost:3000/park/64271153a725c6be244a9e94/home/background`)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+              }
+              return response.blob();
+            })
+            .then((blob) => {
+              const backgroundImg = URL.createObjectURL(blob);
+              setbackgroundImg(backgroundImg);
+              setBackImgFile(backgroundImg)
+              console.log(backgroundImg);
+              // Use the image URL here
+            })
+            .catch((error) => {
+              console.error(`An error occurred: ${error}`);
+            });
+        } catch (err) {
+          console.log(err.message);
+        }
+      
+      
       try {
-        const response = await fetch('http://localhost:3000/park/6422039f794197eaa04f908e/park', {
+        const response = await fetch('http://localhost:3000/park/64271153a725c6be244a9e94/park', {
           method: 'GET',
           mode: 'cors',
         });
@@ -45,7 +81,6 @@ const EditHome = () => {
         setNewEventsText(data.home.events);      
         setNewInfo(data.home.info);
         setNewHours(data.home.hours);
-        setbackgroundImg(data.home.backgroundImg);
        
  
       } catch (error) {
@@ -134,6 +169,7 @@ const EditHome = () => {
       events: newEventsText,
       info: newInfo,
       hours: newHours,
+      backgroundImg :backgroundImg
     };
     setHomeData(updatedHomeData);
      
@@ -147,27 +183,23 @@ const EditHome = () => {
     formData.append("title", JSON.stringify(newTitle));
     formData.append("about", JSON.stringify(newAboutText));
     formData.append("events",JSON.stringify( newEventsText));
-    newInfo.forEach(info => console.log(info));
+    newInfo.forEach(info => formData.append('info[]', JSON.stringify(info)));
 
-    const hours = [];
+     newHours.forEach(hours => formData.append('hours[]', JSON.stringify(hours)));
 
-    newHours.forEach(hoursStr => {
-      const [day, time] = hoursStr.split(' ');
-      hours.push({ day, time }); // simplified object creation
-    });
-    
-    formData.append('hours', JSON.stringify(hours));
     setModalOpen(false);
 
     // Make a POST request to the backend API to save the updated home data
-    fetch('http://localhost:3000/park/6422039f794197eaa04f908e/home', {
+    fetch('http://localhost:3000/park/64271153a725c6be244a9e94/home', {
       method: 'PUT',
      
       body: formData,
     })
     .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.error(error));
+    .then(data => {
+      console.log(data);
+      window.location.reload();
+    })    .catch(error => console.error(error));
   };
   return (
     <>
@@ -266,7 +298,7 @@ const EditHome = () => {
         </a>
         <a
           rel="noopener noreferrer"
-          href="/EditFacilityList"
+          href="/Client/EditFacilityList"
           className="flex items-center flex-shrink-0 px-5 py-3 space-x-2 rounded-t-lg text-gray-900"
         >
           <svg
@@ -287,7 +319,7 @@ const EditHome = () => {
 
         <a
           rel="noopener noreferrer"
-          href="/ClientEventList"
+          href="/Client/ClientEventList"
           className="flex items-center flex-shrink-0 px-5 py-3 space-x-2  text-gray-600"
         >
           <svg
@@ -328,7 +360,7 @@ const EditHome = () => {
       </div>
       <div
         className="bg-cover bg-center h-64 w-full"
-        style={{ backgroundImage: `url(${backgroundImg})` }}
+        style={{ backgroundImage: `url(${backImgFile})` }}
       >
         <div className="container mx-auto h-full flex items-center justify-center">
           <h1 className="text-5xl font-bold leading-tight">{newTitle}</h1>
