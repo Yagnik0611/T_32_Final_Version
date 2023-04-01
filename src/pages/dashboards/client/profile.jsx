@@ -14,7 +14,7 @@ import {
 } from "@material-tailwind/react";
 import React, { Component } from 'react'
 import { useCallback } from 'react';
-
+import ParkForm from "../client/EditParkPages/parkForm";
 import { useParams } from 'react-router-dom'
 import { useEffect, useState } from "react";
 import {  useNavigate } from "react-router-dom";
@@ -28,6 +28,134 @@ import {
 import { Link } from "react-router-dom";
 import { ProfileInfoCard, MessageCard } from "@/widgets/cards";
 import { platformSettingsData, conversationsData, projectsData } from "@/data";
+
+const parksData = [
+  { id: 1, name: "Park 1" },
+  { id: 2, name: "Park 2" },
+  { id: 3, name: "Park 3" },
+  { id: 4, name: "Park 4" },
+];
+
+function ParkListModal({ showModal, toggleModal, userId }) {
+  if (!showModal) return null;
+
+  return (
+    <div className="fixed inset-0 z-10 overflow-y-auto">
+      <div className="flex min-h-screen items-center justify-center px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <div className="fixed inset-0 transition-opacity" onClick={toggleModal}>
+          <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+        </div>
+        <div
+          className="inline-block transform overflow-hidden rounded-md bg-white text-left align-middle shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-3xl sm:align-middle"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-headline"
+        >
+          <div className="bg-white px-4 py-4 sm:px-6 sm:pb-4">
+            <h3
+              className="mb-4 text-lg font-medium leading-6 text-gray-900"
+              id="modal-headline"
+            >
+              Parks (Client ID: {userId})
+            </h3>
+            <div className="overflow-x-auto">
+              <table className="w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                      Park Name
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                      Park ID
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {parksData.map((park) => (
+                    <tr key={park.id}>
+                      <td className="whitespace-nowrap px-6 py-4">
+                        <div className="text-sm text-gray-900">{park.name}</div>
+                      </td>
+                      <td className="whitespace-nowrap px-6 py-4">
+                        <div className="text-sm text-gray-900">{park.id}</div>
+                      </td>
+                      <td className="whitespace-nowrap px-6 py-4">
+                        <button
+                          className="rounded bg-blue-500 py-1 px-2 font-bold text-white hover:bg-blue-700"
+                          onClick={() => handleParkAction(park.id, "edit")}
+                          
+                        >
+                          Edit
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+            <button
+              type="button"
+              className="ml-3 rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+              onClick={toggleModal}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ParkFormModal({ showParkFormModal, toggleParkFormModal }) {
+  if (!showParkFormModal) return null;
+
+  return (
+    <div className="fixed inset-0 z-10 overflow-y-auto">
+      <div className="flex min-h-screen items-center justify-center px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <div
+          className="fixed inset-0 transition-opacity"
+          onClick={toggleParkFormModal}
+        >
+          <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+        </div>
+        <div
+          className="inline-block transform transition-all sm:w-full sm:max-w-md sm:align-middle"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-headline"
+        >
+          <div className="overflow-hidden rounded-lg bg-white shadow-xl">
+           
+              <button
+                type="button"
+                className="absolute top-4 right-4 text-gray-500 hover:text-gray-800"
+                onClick={toggleParkFormModal}
+              >
+                <span className="text-xl font-bold">&times;</span>
+              </button>
+              <h3
+                className="mb-4 mt-6 text-lg font-medium leading-6 text-gray-900"
+                id="modal-headline"
+              >
+                New Park Form
+              </h3>
+              <div>
+              <ParkForm onSubmitSuccess={toggleParkFormModal} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+   
+  );
+}
+
 
 export function Profile() {
 
@@ -55,6 +183,42 @@ export function Profile() {
   const [about_me,setabout_me] = useState("")
   const onhandleClose  = () => setShowBooking(false)
   console.log(showBooking)
+  const [isModalVisible, setIsModalVisible] = useState(true);
+
+  const handleModalClose = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleFormSubmitSuccess = () => {
+    handleModalClose();
+  };
+
+  const [showModal, setShowModal] = useState(false);
+  const [showParkFormModal, setShowParkFormModal] = useState(false);
+
+  const toggleParkFormModal = () => {
+    setShowParkFormModal(!showParkFormModal);
+  };
+
+  // const handleParkAction = (parkId, action) => {
+  //   if (action === "edit") {
+  //     window.location.href = "/client/EditHome";
+  //   } else {
+  //     // Handle other actions if necessary
+  //   }
+  // };
+
+
+
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
+
+  const handleParkAction = (parkId) => {
+    console.log("Selected park ID:", parkId);
+    toggleModal();
+  };
+
   const userId =  localStorage.getItem("userId");
     
   const fetchData = async () => {
@@ -136,6 +300,11 @@ useEffect(() => {
 }, [callback]);
   return (
     <>
+    <ParkFormModal
+        showParkFormModal={showParkFormModal}
+        toggleParkFormModal={toggleParkFormModal}
+      />
+
       <div className="relative mt-8 h-72 w-full overflow-hidden rounded-xl bg-[url(https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80)] bg-cover	bg-center">
         <div className="absolute inset-0 h-full w-full bg-blue-500/50" />
       </div>
@@ -324,29 +493,51 @@ useEffect(() => {
         </CardBody>
       </Card>
       <Card className="mx-3  mb-6 lg:mx-4">
-  <CardHeader
-    floated={false}
-    shadow={false}
-    color="transparent"
-    className="ml-5 flex items-center justify-between pl-10 pr-10 p-5"
-  >
-    <div>
-      <Typography variant="h6" color="blue-gray" className="mb-1 text-m">
-        View My Park 
-      </Typography>
-     
-        
-     
-    </div>
-    <button 
-      className="mb-1 rounded bg-pink-500 px-4 py-2 text-s font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none active:bg-pink-600 sm:mr-2"
-      type="button"
-      onClick={() => window.location.href='/client/EditHome'}
-    >
-      view
-    </button>
-  </CardHeader>
-</Card>
+        <CardHeader
+          floated={false}
+          shadow={false}
+          color="transparent"
+          className="ml-5 flex items-center justify-between p-5 pl-10 pr-10"
+        >
+          <div>
+            <Typography variant="h6" color="blue-gray" className="text-m mb-1">
+              View My Park
+            </Typography>
+          </div>
+          <button
+            className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+            onClick={toggleModal}
+          >
+            Show Parks
+          </button>
+          <ParkListModal
+            showModal={showModal}
+            toggleModal={toggleModal}
+            userId={userId}
+          />
+        </CardHeader>
+      </Card>
+      <Card className="mx-3  mb-6 lg:mx-4">
+        <CardHeader
+          floated={false}
+          shadow={false}
+          color="transparent"
+          className="ml-5 flex items-center justify-between p-5 pl-10 pr-10"
+        >
+          <div>
+            <Typography variant="h6" color="blue-gray" className="text-m mb-1">
+              Create My Park
+            </Typography>
+          </div>
+          <button
+            className="text-s mb-1 rounded bg-pink-500 px-4 py-2 font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none active:bg-pink-600 sm:mr-2"
+            type="button"
+            onClick={toggleParkFormModal}
+          >
+            Create
+          </button>
+        </CardHeader>
+      </Card>
     </>
   );
 }

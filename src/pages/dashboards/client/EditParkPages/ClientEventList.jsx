@@ -176,9 +176,26 @@ function ClientEventList() {
   const handleDeleteEvent = (eventId) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this event?");
     if (confirmDelete) {
-      const updatedEventsData = eventsData.filter((event) => event.id !== eventId);
+      const updatedEventsData = eventsData.filter((event) => event._id !== eventId);
       setEventsData(updatedEventsData);
-  
+      const formData = new FormData();
+
+      formData.append('_id', eventId);
+    
+   
+      
+      console.log(formData)
+      
+          // Make a POST request to the backend API to save the updated home data
+          fetch('http://localhost:3000/park/64271153a725c6be244a9e94/events', {
+            method: 'DELETE',
+           
+            body: formData,
+          })
+          .then(response => response.json())
+          .then(data => console.log(data))
+          .catch(error => console.error(error));
+      
       if (indexOfLastEvent > updatedEventsData.length && currentPage > 1) {
         setCurrentPage(currentPage - 1);
       }
@@ -191,38 +208,7 @@ function ClientEventList() {
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const eventData = {
-      event,
-    };
-
-    try {
-      const res = await fetch(`http://localhost:5501/event/add`, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          "Access-Control-Allow-Origin": "true",
-        },
-
-        mode: "cors",
-        body: JSON.stringify(eventData),
-      });
-      console.log(res);
-      if (res.status === 200) {
-        setResponse("true");
-        {
-          setTimeout(() => {
-            setResponse("false");
-          }, 1500);
-        }
-      }
-      console.log(res.formData);
-      // alert('Saved successfully.');
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
+  
 
   const onClose = () => SetTicketForm(false);
 
@@ -434,7 +420,7 @@ function ClientEventList() {
                       </button>
                       <button
                         className="text-white bg-red-500 rounded-sm py-2 px-3 mt-2 w-32"
-                        onClick={() => handleDeleteEvent(event.id)}
+                        onClick={() => handleDeleteEvent(event._id)}
                       >
                         Delete
                       </button>

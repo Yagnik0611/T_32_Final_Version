@@ -3,6 +3,40 @@ import React, { useEffect,useState } from "react";
 import AddFacilityForm from "./AddFacilityForm";
 import EditFacilityModal from "./EditFacilityModal";
 import FormData from "form-data";
+
+function AddFacilityModal({ onAdd, onClose }) {
+  return (
+    <div className="fixed inset-0 z-30 overflow-y-auto">
+      <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <div className="fixed inset-0 transition-opacity" aria-hidden="true">
+          <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+        </div>
+        <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-lg">
+          <button
+            className="close-button absolute top-2 right-2 text-gray-500 hover:text-gray-700 focus:outline-none focus:shadow-outline p-1 rounded-full transition-colors duration-200"
+            onClick={onClose}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+          <AddFacilityForm onAdd={onAdd} />
+        </div>
+      </div>
+    </div>
+  );
+}
 const mockData = [
   {
     id: 1,
@@ -91,6 +125,8 @@ function ClientFacilityList() {
   const [facilityToEdit, setFacilityToEdit] = useState({});
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [facilityToDelete, setFacilityToDelete] = useState(null);
+  const [showAddFacilityModal, setShowAddFacilityModal] = useState(false);
+
   useEffect(() => {
 
     async function fetchData() {
@@ -115,7 +151,10 @@ function ClientFacilityList() {
     }
     fetchData();
   }, []);
-  
+  const toggleAddFacilityModal = () => {
+    setShowAddFacilityModal(!showAddFacilityModal);
+  };
+
 
   const handleEdit = (facility) => {
     setFacilityToEdit(facility);
@@ -125,21 +164,71 @@ function ClientFacilityList() {
   const handleUpdate = (updatedFacility) => {
     setFacilities(
       facilities.map((facility) =>
-        facility.id === updatedFacility.id ? updatedFacility : facility
+        facility._id === updatedFacility._id ? updatedFacility : facility
       )
+
     );
+    const formData = new FormData();
+
+   
+    // Append upldated facility fields to FormData
+    formData.append('_id', updatedFacility._id);
+    formData.append('name', updatedFacility.name);
+    formData.append('location', updatedFacility.location);
+    formData.append('description', updatedFacility.description);
+    formData.append('capacity', updatedFacility.capacity);
+    formData.append('image', updatedFacility.imageFile);
+    formData.append('visitors[max]', updatedFacility.visitors.max);
+    formData.append('visitors[min]', updatedFacility.visitors.min);
+    
+    // Append equipment fields to FormData
+    updatedFacility.equipment.forEach((equipment) => {
+      const equipmentData = {
+        name: equipment.name,
+        quantity: equipment.quantity,
+        description: equipment.description,
+      };
+      formData.append('equipment[]', JSON.stringify(equipmentData))})
+    
+
+        // Make a POST request to the backend API to save the updated home data
+        fetch('http://localhost:3000/park/64271153a725c6be244a9e94/facility/update', {
+          method: 'PUT',
+         
+          body: formData,
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error(error));
+   
+
   };
 
-  const handleDelete = (id) => {
-    setFacilityToDelete(id);
+  const handleDelete = (_id) => {
+    setFacilityToDelete(_id);
     setShowDeleteModal(true);
   };
 
   const handleConfirmDelete = () => {
     setFacilities(
-      facilities.filter((facility) => facility.id !== facilityToDelete)
+      facilities.filter((facility) => facility._id !== facilityToDelete)
     );
     setShowDeleteModal(false);
+    const formData = new FormData();
+console.log(facilityToDelete)
+
+      formData.append('_id',facilityToDelete);
+      
+          // Make a POST request to the backend API to save the updated home data
+          fetch('http://localhost:3000/park/64271153a725c6be244a9e94/facility', {
+            method: 'DELETE',
+           
+            body: formData,
+          })
+          .then(response => response.json())
+          .then(data => console.log(data))
+          .catch(error => console.error(error));
+
   };
 
   const handleAddFacility = (newFacility) => {
@@ -175,14 +264,17 @@ formData.append('capacity', newFacility.capacity);
 formData.append('image', newFacility.imageFile);
 formData.append('visitors[max]', newFacility.visitors.max);
 formData.append('visitors[min]', newFacility.visitors.min);
-
+formData.append('location', newFacility.location);
 // Append equipment fields to FormData
-   newFacility.equipment.forEach((equipment) => {
-  formData.append('equipment[name][]', equipment.name);
-  formData.append('equipment[quantity][]', equipment.quantity);
-  formData.append('equipment[description][]', equipment.description);
- 
-});
+ // Append equipment fields to FormData
+ newFacility.equipment.forEach((equipment) => {
+  const equipmentData = {
+    name: equipment.name,
+    quantity: equipment.quantity,
+    description: equipment.description,
+  };
+  formData.append('equipment[]', JSON.stringify(equipmentData))})
+
 
 console.log(formData)
 
@@ -195,7 +287,7 @@ console.log(formData)
     .then(response => response.json())
     .then(data => console.log(data))
     .catch(error => console.error(error));
-  
+        setShowAddFacilityModal(false)
   };
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -228,16 +320,164 @@ console.log(formData)
   }
 
   return (
+    <>
     <div>
-     
+    <nav className="fixed top-0 left-0 z-10 w-full border-b border-gray-200 bg-white py-2.5 px-6 sm:px-4">
+        <div className="container mx-auto flex max-w-6xl flex-wrap items-center justify-between">
+          <a href="/Home" className="flex items-center">
+            <span className="self-center whitespace-nowrap text-xl font-semibold">
+              GBC Park & Recreation
+            </span>
+          </a>
+          <div className="mt-2 sm:mt-0 sm:flex md:order-2">
+           
+            <button
+              type="button"
+              className="rounde mr-3 hidden bg-blue-700 py-1.5 px-6 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 md:mr-0 md:inline-block rounded-lg"
+            >
+              Profile
+            </button>
+            <button
+              data-collapse-toggle="navbar-sticky"
+              type="button"
+              className="inline-flex items-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 md:hidden"
+              aria-controls="navbar-sticky"
+              aria-expanded="false"
+            >
+              <svg
+                className="h-6 w-6"
+                aria-hidden="true"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+            </button>
+          </div>
+          <div
+            className="hidden w-full items-center justify-between md:order-1 md:flex md:w-auto"
+            id="navbar-sticky"
+          >
+            <ul className="mt-4 flex flex-col rounded-lg border border-gray-100 bg-gray-50 p-4 md:mt-0 md:flex-row md:space-x-8 md:border-0 md:bg-white md:text-sm md:font-medium">
+              <li>
+                <a
+                  href="/Home"
+                  className="block rounded bg-blue-700 py-2 pl-3 pr-4 text-white md:bg-transparent md:p-0 md:text-blue-700"
+                  aria-current="page"
+                >
+                  Home
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/ParkList"
+                  className="block rounded py-2 pl-3 pr-4 text-gray-700 hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-blue-700"
+                >
+                  Park List
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <div className="pt-12  bg-white">
+        <h1 className="text-center text-2xl font-bold text-gray-800"></h1>
+      </div>
+
+      <div className="flex flex-wrap items-center  overflow-x-auto overflow-y-hidden py-10 justify-center   bg-white text-gray-800">
+        <a
+          rel="noopener noreferrer"
+          href="/EditHome"
+          className="flex items-center flex-shrink-0 px-5 py-3 space-x-2text-gray-600"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            className="w-4 h-4"
+          >
+            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+          </svg>
+          <span>Park Info</span>
+        </a>
+        <a
+          rel="noopener noreferrer"
+          href="/EditFacilityList"
+          className="flex items-center flex-shrink-0 px-5 py-3 space-x-2 rounded-t-lg text-gray-900"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            className="w-4 h-4"
+          >
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+          </svg>
+          <span>Facilities</span>
+        </a>
+
+        <a
+          rel="noopener noreferrer"
+          href="/ClientEventList"
+          className="flex items-center flex-shrink-0 px-5 py-3 space-x-2  text-gray-600"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            className="w-4 h-4"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+          </svg>
+          <a>Event</a>
+        </a>
+        <a
+          rel="noopener noreferrer"
+          href="/ClientMap"
+          className="flex items-center flex-shrink-0 px-5 py-3 space-x-2  text-gray-600"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            className="w-4 h-4"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+          </svg>
+          <span>Map</span>
+        </a>
+      </div>
       {/* <BookingForm visible={bookingForm} onClose={onClose} /> */}
       {/* nav bar here */}
       <div className="bg-white">
-        <div className="h-screen bg-gray-100 pt-20">
-          <div className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
-            <div className="rounded-lg md:w-1/3 flex flex-col">
-              <AddFacilityForm onAdd={addFacility} />
-            </div>
+        <div className="bg-gray-100 pt-20">
+          <div className="mx-auto   max-w-7xl  justify-center px-6 md:flex md:space-x-6 xl:px-0">
+          {" "}
 
             <div className="rounded-lg md:w-2/3 flex flex-col">
               <div className="mb-6">
@@ -249,11 +489,19 @@ console.log(formData)
                   onChange={(event) => setSearchText(event.target.value)}
                 />
               </div>
+              <div className="mb-6 w-full md:w-auto">
+                <button
+                  className="w-full md:w-auto bg-blue-600 text-white px-4 py-2 rounded-lg focus:outline-none focus:shadow-outline"
+                  onClick={toggleAddFacilityModal}
+                >
+                  Add Facility
+                </button>
+              </div>
               {currentItems.map((data) => {
-                  {  console.log(data)}
+              
                 return (
                   <div
-                    key={data.id}
+                    key={data._id}
                     className="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start"
                   >
                     <img
@@ -296,7 +544,7 @@ console.log(formData)
                         </div>
                       </div>
 
-                      <div className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
+                      <div className=" flex justify-between sm:space-y-6  sm:block">
                         <div className="flex items-center border-gray-100 flex-col">
                           <div className="flex items-center rounded-lg bg-blue-500 px-2 py-1">
                             <button
@@ -307,18 +555,18 @@ console.log(formData)
                             </button>
                           </div>
                         </div>
-                        <div className="flex items-center border-gray-100 flex-col mt-4 sm:mt-0">
-                          <div className="flex items-center rounded-lg bg-red-600 px-2 py-1">
+                        <div className="flex items-center border-gray-100 flex-col ">
+                          <div className="flex items-center rounded-lg bg-red-500 px-2 py-1">
                             <button
                               className="text-white font-bold uppercase px-4 py-2 text-xs rounded-lg"
-                              onClick={() => handleDelete(data.id)}
+                              onClick={() => handleDelete(data._id)}
                             >
                               Delete
                             </button>
                           </div>
                         </div>
-                        <div className="flex items-center border-gray-100 flex-col mt-4 sm:mt-0">
-                          <div className="flex items-center rounded-lg bg-green-600 px-2 py-1">
+                        <div className="flex items-center border-gray-100 flex-col ">
+                          <div className="flex items-center rounded-lg bg-green-500 px-2 py-1">
                             <button
                               className="text-white font-bold uppercase px-4 py-2 text-xs rounded-lg"
                               onClick={() => handleEdit(data)}
@@ -464,6 +712,12 @@ console.log(formData)
         />
       )}
 
+{showAddFacilityModal && (
+        <AddFacilityModal
+          onAdd={addFacility}
+          onClose={toggleAddFacilityModal}
+        />
+      )}
       {showDeleteModal && (
         <div className="fixed z-10 inset-0 overflow-y-auto">
           <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -531,6 +785,15 @@ console.log(formData)
         </div>
       )}
     </div>
+     <footer className="bg-gray-900 p-10 text-white text-center">
+     <p>
+       &copy; Copyright 2022, All Rights Reserved by George Brown Company
+     </p>
+     <p>General Information</p>
+     <p>Phone:(807)938-6534</p>
+     <p>Address:Box 730, 479 Government Street Dryden, ONP8N 2Z4</p>
+   </footer>
+</>
   );
 }
 
