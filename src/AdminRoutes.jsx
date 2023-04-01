@@ -6,7 +6,7 @@ import {
   ArrowRightOnRectangleIcon,
   UserPlusIcon,
 } from "@heroicons/react/24/solid";
-import {Home,Profile,Settings} from "@/pages/dashboards/admin";
+import {Home,Profile,Settings,Tables} from "@/pages/dashboards/admin";
 import { SignIn,SignUp } from "@/pages/auth";
 
 const icon = {
@@ -41,6 +41,12 @@ const icon = {
         name: "settings",
         path: "/settings",
         element: <Settings/>,
+      },
+      {
+        icon: <HomeIcon {...icon} />,
+        name: "tables ",
+        path: "/tables",
+        element: <Tables />,
       },
     ],
   },

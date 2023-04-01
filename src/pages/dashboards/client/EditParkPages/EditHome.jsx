@@ -2,13 +2,17 @@ import React, { useState } from "react";
 // import centreIslandPier from "../images/centre-island-pier.png";
 // import Park.home from "./HomeParkPark.home";
 import Modal from "./EditParkHomeModal";
+import { useNavigate, useParams } from "react-router-dom";
+
 import { useEffect } from "react";
 import FormData from "form-data";
 const userId = localStorage.getItem("userId");
 const EditHome = () => {
+  const { parkId } = useParams();
+
   const onChangeFile = (e) => {
-    const file= e.target.files[0]
-     
+    const file = e.target.files[0];
+
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -16,10 +20,8 @@ const EditHome = () => {
       };
       reader.readAsDataURL(file);
     }
-    console.log(backImgFile)
+    console.log(backImgFile);
     setbackgroundImg(e.target.files[0]);
-  
-
   };
   const [Park, setPark] = useState({});
   const [homeData, setHomeData] = useState({
@@ -28,9 +30,9 @@ const EditHome = () => {
     events: "",
     info: [],
     hours: [],
-    backgroundImg:null
+    backgroundImg: null,
   });
-  
+
   const [modalOpen, setModalOpen] = useState(false);
   const [newTitle, setNewTitle] = useState();
   const [newAboutText, setNewAboutText] = useState();
@@ -42,47 +44,46 @@ const EditHome = () => {
   const [backImgFile, setBackImgFile] = useState(null);
   useEffect(() => {
     async function fetchData() {
-    
-        try {
-          fetch(`http://localhost:3000/park/64271153a725c6be244a9e94/home/background`)
-            .then((response) => {
-              if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-              }
-              return response.blob();
-            })
-            .then((blob) => {
-              const backgroundImg = URL.createObjectURL(blob);
-              setbackgroundImg(backgroundImg);
-              setBackImgFile(backgroundImg)
-              console.log(backgroundImg);
-              // Use the image URL here
-            })
-            .catch((error) => {
-              console.error(`An error occurred: ${error}`);
-            });
-        } catch (err) {
-          console.log(err.message);
-        }
-      
-      
       try {
-        const response = await fetch('http://localhost:3000/park/64271153a725c6be244a9e94/park', {
-          method: 'GET',
-          mode: 'cors',
-        });
+        fetch(`http://localhost:3000/park/${parkId}/home/background`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.blob();
+          })
+          .then((blob) => {
+            const backgroundImg = URL.createObjectURL(blob);
+            setbackgroundImg(backgroundImg);
+            setBackImgFile(backgroundImg);
+            console.log(backgroundImg);
+            // Use the image URL here
+          })
+          .catch((error) => {
+            console.error(`An error occurred: ${error}`);
+          });
+      } catch (err) {
+        console.log(err.message);
+      }
+
+      try {
+        const response = await fetch(
+          `http://localhost:3000/park/${parkId}/park`,
+          {
+            method: "GET",
+            mode: "cors",
+          }
+        );
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
         const data = await response.json();
         setPark(data);
         setNewTitle(data.home.title);
-        setNewAboutText(data.home.about);      
-        setNewEventsText(data.home.events);      
+        setNewAboutText(data.home.about);
+        setNewEventsText(data.home.events);
         setNewInfo(data.home.info);
         setNewHours(data.home.hours);
-       
- 
       } catch (error) {
         console.error(error);
       }
@@ -90,8 +91,7 @@ const EditHome = () => {
     fetchData();
   }, []);
 
-
-    const handleImageUpload = (event) => {
+  const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -157,24 +157,31 @@ const EditHome = () => {
       events: newEventsText,
       info: newInfo,
       hours: newHours,
-      backgroundImg : backgroundImg
+      backgroundImg: backgroundImg,
     });
-  }, [newTitle, newAboutText, newEventsText, newInfo, newHours, activeSection, backgroundImg]);
-  
+  }, [
+    newTitle,
+    newAboutText,
+    newEventsText,
+    newInfo,
+    newHours,
+    activeSection,
+    backgroundImg,
+  ]);
+
   const handleSaveChanges = () => {
-    
     const updatedHomeData = {
       title: newTitle,
       about: newAboutText,
       events: newEventsText,
       info: newInfo,
       hours: newHours,
-      backgroundImg :backgroundImg
+      backgroundImg: backgroundImg,
     };
     setHomeData(updatedHomeData);
-     
+
     // const formData = new FormData();
-   
+
     // for (const key in homeData) {
     //   formData.append(key, formData[key]);
     // setModalOpen(false);
@@ -182,24 +189,27 @@ const EditHome = () => {
     formData.append("backgroundImg", backgroundImg);
     formData.append("title", JSON.stringify(newTitle));
     formData.append("about", JSON.stringify(newAboutText));
-    formData.append("events",JSON.stringify( newEventsText));
-    newInfo.forEach(info => formData.append('info[]', JSON.stringify(info)));
+    formData.append("events", JSON.stringify(newEventsText));
+    newInfo.forEach((info) => formData.append("info[]", JSON.stringify(info)));
 
-     newHours.forEach(hours => formData.append('hours[]', JSON.stringify(hours)));
+    newHours.forEach((hours) =>
+      formData.append("hours[]", JSON.stringify(hours))
+    );
 
     setModalOpen(false);
 
     // Make a POST request to the backend API to save the updated home data
-    fetch('http://localhost:3000/park/64271153a725c6be244a9e94/home', {
-      method: 'PUT',
-     
+    fetch(`http://localhost:3000/park/${parkId}/home`, {
+      method: "PUT",
+
       body: formData,
     })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      window.location.reload();
-    })    .catch(error => console.error(error));
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        window.location.reload();
+      })
+      .catch((error) => console.error(error));
   };
   return (
     <>
@@ -213,13 +223,13 @@ const EditHome = () => {
           <div className="mt-2 sm:mt-0 sm:flex md:order-2">
             <button
               type="button"
-              className="rounde mr-3 hidden border border-blue-700 py-1.5 px-6 text-center text-sm font-medium text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 md:inline-block rounded-lg"
+              className="rounde mr-3 hidden rounded-lg border border-blue-700 py-1.5 px-6 text-center text-sm font-medium text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 md:inline-block"
             >
               Login
             </button>
             <button
               type="button"
-              className="rounde mr-3 hidden bg-blue-700 py-1.5 px-6 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 md:mr-0 md:inline-block rounded-lg"
+              className="rounde mr-3 hidden rounded-lg bg-blue-700 py-1.5 px-6 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 md:mr-0 md:inline-block"
             >
               Register
             </button>
@@ -272,15 +282,15 @@ const EditHome = () => {
         </div>
       </nav>
 
-      <div className="pt-32  bg-white">
+      <div className="bg-white  pt-32">
         <h1 className="text-center text-2xl font-bold text-gray-800"></h1>
       </div>
 
-      <div className="flex flex-wrap items-center  overflow-x-auto overflow-y-hidden py-10 justify-center   bg-white text-gray-800">
+      <div className="flex flex-wrap items-center  justify-center overflow-x-auto overflow-y-hidden bg-white   py-10 text-gray-800">
         <a
           rel="noopener noreferrer"
-          href="/EditHome"
-          className="flex items-center flex-shrink-0 px-5 py-3 space-x-2text-gray-600"
+          href={`/Client/EditHome/${parkId}`}
+          className="space-x-2text-gray-600 flex flex-shrink-0 items-center px-5 py-3"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -290,7 +300,7 @@ const EditHome = () => {
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            className="w-4 h-4"
+            className="h-4 w-4"
           >
             <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
           </svg>
@@ -298,8 +308,8 @@ const EditHome = () => {
         </a>
         <a
           rel="noopener noreferrer"
-          href="/Client/EditFacilityList"
-          className="flex items-center flex-shrink-0 px-5 py-3 space-x-2 rounded-t-lg text-gray-900"
+          href={`/Client/EditFacilityList/${parkId}`}
+          className="flex flex-shrink-0 items-center space-x-2 rounded-t-lg px-5 py-3 text-gray-900"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -309,7 +319,7 @@ const EditHome = () => {
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            className="w-4 h-4"
+            className="h-4 w-4"
           >
             <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
             <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
@@ -319,8 +329,8 @@ const EditHome = () => {
 
         <a
           rel="noopener noreferrer"
-          href="/Client/ClientEventList"
-          className="flex items-center flex-shrink-0 px-5 py-3 space-x-2  text-gray-600"
+          href={`/Client/ClientEventList/${parkId}`}
+          className="flex flex-shrink-0 items-center space-x-2 px-5 py-3  text-gray-600"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -330,7 +340,7 @@ const EditHome = () => {
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            className="w-4 h-4"
+            className="h-4 w-4"
           >
             <circle cx="12" cy="12" r="10"></circle>
             <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
@@ -339,8 +349,8 @@ const EditHome = () => {
         </a>
         <a
           rel="noopener noreferrer"
-          href="/ClientMap"
-          className="flex items-center flex-shrink-0 px-5 py-3 space-x-2  text-gray-600"
+          href={`/Client/ClientMap/${parkId}`}
+          className="flex flex-shrink-0 items-center space-x-2 px-5 py-3  text-gray-600"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -350,7 +360,7 @@ const EditHome = () => {
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            className="w-4 h-4"
+            className="h-4 w-4"
           >
             <circle cx="12" cy="12" r="10"></circle>
             <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
@@ -359,46 +369,46 @@ const EditHome = () => {
         </a>
       </div>
       <div
-        className="bg-cover bg-center h-64 w-full"
+        className="h-64 w-full bg-cover bg-center"
         style={{ backgroundImage: `url(${backImgFile})` }}
       >
-        <div className="container mx-auto h-full flex items-center justify-center">
+        <div className="container mx-auto flex h-full items-center justify-center">
           <h1 className="text-5xl font-bold leading-tight">{newTitle}</h1>
         </div>
       </div>
 
       <div className="container mx-auto p-10">
         <button
-          className="bg-gray-900 text-white text-lg font-semibold py-2 px-4 rounded-full ml-4"
+          className="ml-4 rounded-full bg-gray-900 py-2 px-4 text-lg font-semibold text-white"
           onClick={handleModalOpen}
         >
           Edit
         </button>
         <div className="flex flex-wrap">
-          <div className="w-full md:w-1/2 p-10">
-            <div className="bg-white p-10 rounded-lg shadow-lg">
-              <h2 className="text-3xl font-bold mb-5">About Us</h2>
-              <p className="text-gray-600 text-lg leading-relaxed mb-10">
+          <div className="w-full p-10 md:w-1/2">
+            <div className="rounded-lg bg-white p-10 shadow-lg">
+              <h2 className="mb-5 text-3xl font-bold">About Us</h2>
+              <p className="mb-10 text-lg leading-relaxed text-gray-600">
                 {newAboutText}
               </p>
-              <h3 className="text-xl font-bold mb-5 mt-10">
+              <h3 className="mb-5 mt-10 text-xl font-bold">
                 Events & Programs
               </h3>
-              <p className="text-gray-600 text-lg leading-relaxed mb-10">
+              <p className="mb-10 text-lg leading-relaxed text-gray-600">
                 {newEventsText}
               </p>
             </div>
           </div>
-          <div className="w-full md:w-1/2 p-10">
-            <div className="bg-white p-10 rounded-lg shadow-lg">
-              <h2 className="text-3xl font-bold mb-5">Info</h2>
-              <ul className="text-gray-600 text-lg leading-relaxed mb-10">
+          <div className="w-full p-10 md:w-1/2">
+            <div className="rounded-lg bg-white p-10 shadow-lg">
+              <h2 className="mb-5 text-3xl font-bold">Info</h2>
+              <ul className="mb-10 text-lg leading-relaxed text-gray-600">
                 {newInfo.map((item, index) => (
                   <li key={index}>{item}</li>
                 ))}
               </ul>
-              <h3 className="text-xl font-bold mb-5 mt-10">Hours</h3>
-              <ul className="text-gray-600 text-lg leading-relaxed">
+              <h3 className="mb-5 mt-10 text-xl font-bold">Hours</h3>
+              <ul className="text-lg leading-relaxed text-gray-600">
                 {newHours.map((item, index) => (
                   <li key={index}>{`${item.day}: ${item.time}`}</li>
                 ))}
@@ -416,18 +426,17 @@ const EditHome = () => {
         {activeSection === 5 && (
           <div className="mb-6">
             <label
-              className="block text-gray-700 font-bold mb-2"
+              className="mb-2 block font-bold text-gray-700"
               htmlFor="background-image"
             >
               Background Image
             </label>
             <input
               fileName="backgroundImg"
-              className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
+              className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:outline-none"
               id="background-image"
               type="file"
               accept="image/*"
-              
               onChange={onChangeFile}
             />
           </div>
@@ -437,13 +446,13 @@ const EditHome = () => {
             {
               <div className="mb-6">
                 <label
-                  className="block text-gray-700 font-bold mb-2"
+                  className="mb-2 block font-bold text-gray-700"
                   htmlFor="park-title"
                 >
                   Title
                 </label>
                 <input
-                  className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
+                  className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:outline-none"
                   id="park-title"
                   type="text"
                   value={newTitle}
@@ -459,13 +468,13 @@ const EditHome = () => {
               <div>
                 {" "}
                 <label
-                  className="block text-gray-700 font-bold mb-2"
+                  className="mb-2 block font-bold text-gray-700"
                   htmlFor="events-textarea"
                 >
                   Events & Programs
                 </label>
                 <textarea
-                  className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
+                  className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:outline-none"
                   id="events-textarea"
                   rows="5"
                   value={newEventsText}
@@ -480,13 +489,13 @@ const EditHome = () => {
             {
               <div className="mb-6">
                 <label
-                  className="block text-gray-700 font-bold mb-2"
+                  className="mb-2 block font-bold text-gray-700"
                   htmlFor="about-textarea"
                 >
                   About Us
                 </label>
                 <textarea
-                  className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
+                  className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:outline-none"
                   id="about-textarea"
                   rows="5"
                   value={newAboutText}
@@ -501,13 +510,13 @@ const EditHome = () => {
             {
               <div className="mb-6">
                 <label
-                  className="block text-gray-700 font-bold mb-2"
+                  className="mb-2 block font-bold text-gray-700"
                   htmlFor="park-info"
                 >
                   Info
                 </label>
                 <textarea
-                  className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
+                  className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:outline-none"
                   id="park-info"
                   rows="5"
                   value={newInfo.join("\n")}
@@ -524,15 +533,15 @@ const EditHome = () => {
             {
               <div className="mb-6">
                 <label
-                  className="block text-gray-700 font-bold mb-2"
+                  className="mb-2 block font-bold text-gray-700"
                   htmlFor="park-hours"
                 >
                   Hours
                 </label>
                 {newHours.map((item, index) => (
-                  <div key={index} className="flex mb-2">
+                  <div key={index} className="mb-2 flex">
                     <input
-                      className="w-1/2 px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
+                      className="w-1/2 rounded-lg border px-3 py-2 text-gray-700 focus:outline-none"
                       type="text"
                       value={item.day}
                       onChange={(event) => {
@@ -542,14 +551,13 @@ const EditHome = () => {
                       }}
                     />
                     <input
-                      className="w-1/2 px-3 py-2 text-gray-700 border rounded-lg focus:outline-none ml-2"
+                      className="ml-2 w-1/2 rounded-lg border px-3 py-2 text-gray-700 focus:outline-none"
                       type="text"
                       value={item.time}
                       onChange={(event) => {
                         const hours = [...newHours];
                         hours[index].time = event.target.value;
                         setNewHours(hours);
-                   
                       }}
                     />
                   </div>
@@ -561,14 +569,14 @@ const EditHome = () => {
 
         <div className="mb-6">
           <button
-            className="bg-gray-900 text-white text-lg font-semibold py-2 px-4 rounded-full"
+            className="rounded-full bg-gray-900 py-2 px-4 text-lg font-semibold text-white"
             onClick={handlePreviousSection}
             disabled={activeSection === 0}
           >
             Previous
           </button>
           <button
-            className="bg-gray-900 text-white text-lg font-semibold py-2 px-4 rounded-full"
+            className="rounded-full bg-gray-900 py-2 px-4 text-lg font-semibold text-white"
             onClick={handleNextSection}
             disabled={activeSection === sectionList.length - 1}
           >

@@ -2,6 +2,8 @@ import React, { useEffect,useState } from "react";
 // import BookingForm from "../pages/BookingForm";
 import AddFacilityForm from "./AddFacilityForm";
 import EditFacilityModal from "./EditFacilityModal";
+import { useNavigate,useParams } from "react-router-dom";
+
 import FormData from "form-data";
 
 function AddFacilityModal({ onAdd, onClose }) {
@@ -114,6 +116,8 @@ const mockData = [
 ];
 
 function ClientFacilityList() {
+  const { parkId } = useParams();
+
   const [showModal, setShowModal] = useState(false);
   const [bookingForm, setBookingForm] = useState(false);
   const [selectedFacility, setSelectedFacility] = useState({});
@@ -134,7 +138,7 @@ function ClientFacilityList() {
       
       
       try {
-        const response = await fetch('http://localhost:3000/park/64271153a725c6be244a9e94/facImg', {
+        const response = await fetch(`http://localhost:3000/park/${parkId}/facImg`, {
           method: 'GET',
           mode: 'cors',
         });
@@ -192,7 +196,7 @@ function ClientFacilityList() {
     
 
         // Make a POST request to the backend API to save the updated home data
-        fetch('http://localhost:3000/park/64271153a725c6be244a9e94/facility/update', {
+        fetch(`http://localhost:3000/park/${parkId}/facility/update`, {
           method: 'PUT',
          
           body: formData,
@@ -220,7 +224,7 @@ console.log(facilityToDelete)
       formData.append('_id',facilityToDelete);
       
           // Make a POST request to the backend API to save the updated home data
-          fetch('http://localhost:3000/park/64271153a725c6be244a9e94/facility', {
+          fetch(`http://localhost:3000/park/${parkId}/facility`, {
             method: 'DELETE',
            
             body: formData,
@@ -279,7 +283,7 @@ formData.append('location', newFacility.location);
 console.log(formData)
 
     // Make a POST request to the backend API to save the updated home data
-    fetch('http://localhost:3000/park/64271153a725c6be244a9e94/facilities', {
+    fetch(`http://localhost:3000/park/${parkId}/facilities`, {
       method: 'PUT',
      
       body: formData,
@@ -322,7 +326,7 @@ console.log(formData)
   return (
     <>
     <div>
-    <nav className="fixed top-0 left-0 z-10 w-full border-b border-gray-200 bg-white py-2.5 px-6 sm:px-4">
+    <nav className="fixed top-0 left-0 z-20 w-full border-b border-gray-200 bg-white py-2.5 px-6 sm:px-4">
         <div className="container mx-auto flex max-w-6xl flex-wrap items-center justify-between">
           <a href="/Home" className="flex items-center">
             <span className="self-center whitespace-nowrap text-xl font-semibold">
@@ -330,12 +334,17 @@ console.log(formData)
             </span>
           </a>
           <div className="mt-2 sm:mt-0 sm:flex md:order-2">
-           
             <button
               type="button"
-              className="rounde mr-3 hidden bg-blue-700 py-1.5 px-6 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 md:mr-0 md:inline-block rounded-lg"
+              className="rounde mr-3 hidden rounded-lg border border-blue-700 py-1.5 px-6 text-center text-sm font-medium text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 md:inline-block"
             >
-              Profile
+              Login
+            </button>
+            <button
+              type="button"
+              className="rounde mr-3 hidden rounded-lg bg-blue-700 py-1.5 px-6 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 md:mr-0 md:inline-block"
+            >
+              Register
             </button>
             <button
               data-collapse-toggle="navbar-sticky"
@@ -386,15 +395,14 @@ console.log(formData)
         </div>
       </nav>
 
-      <div className="pt-12  bg-white">
+      <div className="bg-white  pt-32">
         <h1 className="text-center text-2xl font-bold text-gray-800"></h1>
       </div>
 
-      <div className="flex flex-wrap items-center  overflow-x-auto overflow-y-hidden py-10 justify-center   bg-white text-gray-800">
+      <div className="flex flex-wrap items-center  justify-center overflow-x-auto overflow-y-hidden bg-white   py-10 text-gray-800">
         <a
           rel="noopener noreferrer"
-          href="/EditHome"
-          className="flex items-center flex-shrink-0 px-5 py-3 space-x-2text-gray-600"
+          href={`/Client/EditHome/${parkId}`}          className="space-x-2text-gray-600 flex flex-shrink-0 items-center px-5 py-3"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -404,7 +412,7 @@ console.log(formData)
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            className="w-4 h-4"
+            className="h-4 w-4"
           >
             <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
           </svg>
@@ -412,8 +420,8 @@ console.log(formData)
         </a>
         <a
           rel="noopener noreferrer"
-          href="/EditFacilityList"
-          className="flex items-center flex-shrink-0 px-5 py-3 space-x-2 rounded-t-lg text-gray-900"
+          href={`/Client/EditFacilityList/${parkId}`}
+          className="flex flex-shrink-0 items-center space-x-2 rounded-t-lg px-5 py-3 text-gray-900"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -423,7 +431,7 @@ console.log(formData)
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            className="w-4 h-4"
+            className="h-4 w-4"
           >
             <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
             <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
@@ -433,8 +441,9 @@ console.log(formData)
 
         <a
           rel="noopener noreferrer"
-          href="/ClientEventList"
-          className="flex items-center flex-shrink-0 px-5 py-3 space-x-2  text-gray-600"
+        
+          href={`/Client/ClientEventList/${parkId}`}
+          className="flex flex-shrink-0 items-center space-x-2 px-5 py-3  text-gray-600"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -444,7 +453,7 @@ console.log(formData)
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            className="w-4 h-4"
+            className="h-4 w-4"
           >
             <circle cx="12" cy="12" r="10"></circle>
             <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
@@ -453,8 +462,8 @@ console.log(formData)
         </a>
         <a
           rel="noopener noreferrer"
-          href="/ClientMap"
-          className="flex items-center flex-shrink-0 px-5 py-3 space-x-2  text-gray-600"
+          href={`/Client/ClientMap/${parkId}`}
+          className="flex flex-shrink-0 items-center space-x-2 px-5 py-3  text-gray-600"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -464,7 +473,7 @@ console.log(formData)
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            className="w-4 h-4"
+            className="h-4 w-4"
           >
             <circle cx="12" cy="12" r="10"></circle>
             <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>

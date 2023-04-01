@@ -1,11 +1,11 @@
 import React, { useRef, useState } from "react";
-
+const userId = localStorage.getItem("userId");
 function ParkForm({ onSubmitSuccess }) {
   const [dragging, setDragging] = useState({});
   const [files, setFiles] = useState({});
   const [isVisible, setIsVisible] = useState(true);
   const [parkData, setParkData] = useState({
-    parkClientOwner: "",
+    description: "",
     parkName: "",
     parkLocation: "",
     email: "",
@@ -19,7 +19,7 @@ function ParkForm({ onSubmitSuccess }) {
 
   const handleReset = () => {
     setParkData({
-      parkClientOwner: "",
+      description: "",
       parkName: "",
       parkLocation: "",
       email: "",
@@ -38,22 +38,36 @@ function ParkForm({ onSubmitSuccess }) {
 
     // Only show the alert if all inputs are valid
     if (allInputsValid) {
-      window.alert("Please wait 5 to 7 business days to complete this process");
-      console.log(parkData);
-      console.log(files);
-      const formData = new FormData();
-      formData.append("email", parkData.email);
-      formData.append("name", parkData.parkName);
-      formData.append("location", parkData.parkLocation);
-      formData.append("Client_id", parkData.parkClientOwner);
-
-      Object.entries(files).forEach(([name, data]) => {
-        formData.append(name, data);
-      });
-
       if (onSubmitSuccess) {
         onSubmitSuccess(); // Close the ParkFormModal after successful submission
       }
+      const fileReader = new FileReader();
+
+      window.alert("Please wait 5 to 7 business days to complete this process");
+      console.log(parkData);
+      console.log(files);
+      console.log(files.land_title_deed[0]);
+      const formData = new FormData();
+      formData.append("clientId", userId);
+      formData.append("name", parkData.parkName);
+      formData.append("address", parkData.parkLocation);
+      formData.append("description", parkData.description);
+      formData.append("phone", parkData.phone);
+      formData.append("email", parkData.email);
+      formData.append("land_title_deed", files.land_title_deed[0]);
+      formData.append("purchase_agreement", files.purchase_agreement[0]);
+      formData.append("zoning_by_laws", files.zoning_by_laws[0]);
+      formData.append("building_permits", files.building_permits[0]);
+
+      // Make a POST request to the backend API to save the updated home data
+      fetch("http://localhost:3000/park/create-park-and-request", {
+        method: "POST",
+
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => console.log(data))
+        .catch((error) => console.error(error));
     } else {
       console.warn("Some inputs are invalid. Please check and try again.");
     }
@@ -106,12 +120,39 @@ function ParkForm({ onSubmitSuccess }) {
       [section]: false,
     }));
   };
+  // const createDropHandler = (section) => (event) => {
+  //   event.preventDefault();
+  //   const droppedFiles = event.dataTransfer.files;
+
+  //   // Create an array to hold the files as binary data
+  //   const binaryFiles = [];
+
+  //   // Loop through the dropped files and read them as binary data
+  //   for (let i = 0; i < droppedFiles.length; i++) {
+  //     const fileReader = new FileReader();
+  //     fileReader.onload = (event) => {
+  //       binaryFiles.push(event.target.result);
+  //     };
+  //     fileReader.readAsBinaryString(droppedFiles[i]);
+  //   }
+
+  //   setFiles((prevFiles) => ({
+  //     ...prevFiles,
+  //     [section]: binaryFiles,
+  //   }));
+
+  //   // Reset the dragging state for the current section
+  //   setDragging((prev) => ({
+  //     ...prev,
+  //     [section]: false,
+  //   }));
+  // };
 
   const sections = [
-    "Land title/deed",
-    "Purchase agreement",
-    "Zoning by laws",
-    "Building permits",
+    "land_title_deed",
+    "purchase_agreement",
+    "zoning_by_laws",
+    "building_permits",
   ];
 
   const fileInputRef = useRef();
@@ -162,13 +203,14 @@ function ParkForm({ onSubmitSuccess }) {
           </h1>
           <div className="grid grid-cols-2 gap-4">
             {[
-              {
-                label: "Park Client Owner",
-                name: "parkClientOwner",
-                type: "text",
-              },
+              
               { label: "Park Name", name: "parkName", type: "text" },
               { label: "Park Location", name: "parkLocation", type: "text" },
+              {
+                label: "Description",
+                name: "description",
+                type: "text",
+              },
               { label: "Email", name: "email", type: "email" },
               { label: "Phone", name: "phone", type: "tel" },
             ].map(({ label, name, type }) => (

@@ -29,14 +29,35 @@ import { Link } from "react-router-dom";
 import { ProfileInfoCard, MessageCard } from "@/widgets/cards";
 import { platformSettingsData, conversationsData, projectsData } from "@/data";
 
-const parksData = [
-  { id: 1, name: "Park 1" },
-  { id: 2, name: "Park 2" },
-  { id: 3, name: "Park 3" },
-  { id: 4, name: "Park 4" },
-];
 
-function ParkListModal({ showModal, toggleModal, userId }) {
+function ParkListModal({ showModal, toggleModal, clientId }) {
+
+  const [parksData, setParks] = useState([
+    { id: 1, name: "Park 1" },
+    { id: 2, name: "Park 2" },
+    { id: 3, name: "Park 3" },
+    { id: 4, name: "Park 4" },
+  ]);
+  useEffect(() => {
+console.log(clientId)
+    async function fetchData() {
+      try {
+      // replace with the actual client ID
+        const response = await fetch(`http://localhost:3000/park/parks/${clientId}`, {
+          method: 'GET',
+          mode: 'cors',
+        });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setParks(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchData();
+  }, []);
   if (!showModal) return null;
 
   return (
@@ -56,7 +77,7 @@ function ParkListModal({ showModal, toggleModal, userId }) {
               className="mb-4 text-lg font-medium leading-6 text-gray-900"
               id="modal-headline"
             >
-              Parks (Client ID: {userId})
+              Parks (Client ID: {clientId})
             </h3>
             <div className="overflow-x-auto">
               <table className="w-full divide-y divide-gray-200">
@@ -75,21 +96,18 @@ function ParkListModal({ showModal, toggleModal, userId }) {
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                   {parksData.map((park) => (
-                    <tr key={park.id}>
+                    <tr key={park._id}>
                       <td className="whitespace-nowrap px-6 py-4">
                         <div className="text-sm text-gray-900">{park.name}</div>
                       </td>
                       <td className="whitespace-nowrap px-6 py-4">
-                        <div className="text-sm text-gray-900">{park.id}</div>
+                        <div className="text-sm text-gray-900">{park._id}</div>
                       </td>
                       <td className="whitespace-nowrap px-6 py-4">
-                        <button
-                          className="rounded bg-blue-500 py-1 px-2 font-bold text-white hover:bg-blue-700"
-                          onClick={() => handleParkAction(park.id, "edit")}
-                          
-                        >
-                          Edit
-                        </button>
+                       
+                        <a href={`/Client/EditHome/${park._id}`} className="ml-3 rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700">
+  Edit
+</a>
                       </td>
                     </tr>
                   ))}
@@ -215,7 +233,17 @@ export function Profile() {
   };
 
   const handleParkAction = (parkId) => {
-    console.log("Selected park ID:", parkId);
+    
+   // Get the history object from react-router-dom
+  const history = History();
+
+  // Construct the new URL with the client ID and park ID
+  const url = `/client/edithomepage/${parkId}`;
+
+  // Navigate to the new URL using history.push()
+  history.push(url);
+ 
+    
     toggleModal();
   };
 
@@ -513,7 +541,7 @@ useEffect(() => {
           <ParkListModal
             showModal={showModal}
             toggleModal={toggleModal}
-            userId={userId}
+            clientId={userId}
           />
         </CardHeader>
       </Card>
