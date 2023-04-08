@@ -45,83 +45,71 @@ export const existingClients = [
 
 export const authorsTableData = [
   {
-   
-    name: "John Michael",
-    email: "john@creative-tim.com",
-    parkName: "Green Park",
-    requestDate: "23/04/18",
-    documents: {
+    "client_pic": "https://randomuser.me/api/portraits/men/1.jpg",
+    "client_name": "John Michael",
+    "email": "john@creative-tim.com",
+    "park_name": "Green Park",
+    "createdAt": "23/04/18",
+    "documents": {
       "Land title/deed": "https://www.example.com/document1.pdf",
       "Purchase agreement": "https://www.example.com/document2.pdf",
       "Zoning by laws": "https://www.example.com/document3.pdf",
-      "Building permits": "https://www.example.com/document4.pdf",
-    },
+      "Building permits": "https://www.example.com/document4.pdf"
+    }
   },
-  {
-   
-    name: "Alexa Liras",
-    email: "alexa@creative-tim.com",
-    parkName: "Sunny Park",
-    requestDate: "11/01/19",
-    documents: {
-      "Land title/deed": "https://www.example.com/document5.pdf",
-      "Purchase agreement": "https://www.example.com/document6.pdf",
-      "Zoning by laws": "https://www.example.com/document7.pdf",
-      "Building permits": "https://www.example.com/document8.pdf",
-    },
-  },
-  {
-   
-    name: "Laurent Perrier",
-    email: "laurent@creative-tim.com",
-    parkName: "Adventure Park",
-    requestDate: "19/09/17",
-    documents: {
-      "Land title/deed": "https://www.example.com/document9.pdf",
-      "Purchase agreement": "https://www.example.com/document10.pdf",
-      "Zoning by laws": "https://www.example.com/document11.pdf",
-      "Building permits": "https://www.example.com/document12.pdf",
-    },
-  },
-  {
-   
-    name: "Michael Levi",
-    email: "michael@creative-tim.com",
-    parkName: "Funland",
-    requestDate: "24/12/08",
-    documents: {
-      "Land title/deed": "https://www.example.com/document13.pdf",
-      "Purchase agreement": "https://www.example.com/document14.pdf",
-      "Zoning by laws": "https://www.example.com/document15.pdf",
-      "Building permits": "https://www.example.com/document16.pdf",
-    },
-  },
-  {
+  // {
+  //   "client_pic": "https://randomuser.me/api/portraits/women/1.jpg",
+  //   "client_name": "Alexa Liras",
+  //   "email": "alexa@creative-tim.com",
+  //   "park_name": "Sunny Park",
+  //   "createdAt": "11/01/19",
+  //   "documents": {
+  //     "Land title/deed": "https://www.example.com/document5.pdf",
+  //     "Purchase agreement": "https://www.example.com/document6.pdf",
+  //     "Zoning by laws": "https://www.example.com/document7.pdf",
+  //     "Building permits": "https://www.example.com/document8.pdf"
+  //   }
+  // },
+  // {
+  //   "client_pic": "https://randomuser.me/api/portraits/men/2.jpg",
+  //   "client_name": "Laurent Perrier",
+  //   "email": "laurent@creative-tim.com",
+  //   "park_name": "Adventure Park",
+  //   "createdAt": "19/09/17",
+  //   "documents": {
+  //     "Land title/deed": "https://www.example.com/document9.pdf",
+  //     "Purchase agreement": "https://www.example.com/document10.pdf",
+  //     "Zoning by laws": "https://www.example.com/document11.pdf",
+  //     "Building permits": "https://www.example.com/document12.pdf"
+  //   }
+  // },
+  // {
+  //   "client_pic": "https://randomuser.me/api/portraits/men/3.jpg",
+  //   "client_name": "Michael Levi",
+  //   "email": "michael@creative-tim.com",
+  //   "park_name": "Funland",
+  //   "createdAt": "24/12/08",
+  //   "documents": {
+  //     "Land title/deed": "https://www.example.com/document13.pdf",
+  //     "Purchase agreement": "https://www.example.com/document14.pdf",
+  //     "Zoning by laws": "https://www.example.com/document15.pdf",
+  //     "Building permits": "https://www.example.com/document16.pdf"
+  //   }
+  // },
+  // {
+  //   "client_pic": "https://randomuser.me/api/portraits/women/2.jpg",
+  //   "client_name": "Bruce Mars",
+  //   "email": "bruce@creative-tim.com",
+  //   "park_name": "Nature Park",
+  //   "createdAt": "04/10/21",
+  //   "documents": {
+  //     "Land title/deed": "https://www.example.com/document17.pdf",
+  //     "Purchase agreement": "https://www.example.com/document18.pdf",
+  //     "Zoning by laws": "https://www.example.com/document19.pdf",
+  //     "Building permits": "https://www.example.com/document20.pdf"
+  //   }
   
-    name: "Bruce Mars",
-    email: "bruce@creative-tim.com",
-    parkName: "Nature Park",
-    requestDate: "04/10/21",
-    documents: {
-      "Land title/deed": "https://www.example.com/document17.pdf",
-      "Purchase agreement": "https://www.example.com/document18.pdf",
-      "Zoning by laws": "https://www.example.com/document19.pdf",
-      "Building permits": "https://www.example.com/document20.pdf",
-    },
-  },
-  {
-   
-    name: "Alexander",
-    email: "alexander@creative-tim.com",
-    parkName: "Water World",
-    requestDate: "14/09/20",
-    documents: {
-      "Land title/deed": "https://www.example.com/document21.pdf",
-      "Purchase agreement": "https://www.example.com/document22.pdf",
-      "Zoning by laws": "https://www.example.com/document23.pdf",
-      "Building permits": "https://www.example.com/document24.pdf",
-    },
-  },
+  // },
 ];
 
 export default authorsTableData;

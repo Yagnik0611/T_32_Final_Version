@@ -25,7 +25,7 @@ import {
   setOpenConfigurator,
   setOpenSidenav,
 } from "@/context";
-
+import { useSignOut } from 'react-auth-kit'
 export function DashboardNavbar() {
   const [controller, dispatch] = useMaterialTailwindController();
   const { fixedNavbar, openSidenav } = controller;
@@ -33,12 +33,17 @@ export function DashboardNavbar() {
   const [layout, page] = pathname.split("/").filter((el) => el !== "");
   const logout = () => {
     // Delete all cookies
-    document.cookie.split(";").forEach(function(c) {
-      document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=../../auth/sign-in");
+   
+    localStorage.clear();
+    document.cookie.split(";").forEach((c) => {
+      document.cookie = c
+        .replace(/^ +/, "")
+        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
     });
     
-    // Redirect to sign-in page
     window.location.href = "../../auth/sign-in";
+    // Redirect to sign-in page
+    location.reload()
   };
   
   return (

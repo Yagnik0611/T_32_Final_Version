@@ -13,6 +13,7 @@ import {
   authorsTableData,
   existingClients,
 } from "../admin/data/authors-table-data";
+import FormData from "form-data";
 
 function ActionResultModal({ action, clientName, onClose }) {
   return (
@@ -59,9 +60,9 @@ function ActionResultModal({ action, clientName, onClose }) {
   );
 }
 
-function DocumentModal({ documentUrl, onClose }) {
+function DocumentModal({ documents, onClose }) {
   const renderDocuments = () => {
-    return Object.entries(authorsTableData[0].documents).map(
+    return Object.entries(documents).map(
       ([docName, docUrl]) => {
         return (
           <tr
@@ -69,26 +70,28 @@ function DocumentModal({ documentUrl, onClose }) {
             className="border-b border-gray-200 hover:bg-gray-100"
           >
             <td className="whitespace-nowrap px-6 py-4">
-              <div className="text-sm font-medium text-gray-900">{docName}</div>
+              <div className="text-sm font-medium text-gray-900">{docName.replace(/_/g, ' ')}</div>
             </td>
             <td className="whitespace-nowrap px-6 py-4">
               <a
-                href={docUrl}
+               href={`http://localhost:3000/${docUrl}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 hover:text-blue-800"
               >
-                {docUrl}
+                {docName +"_Doc.pdf"}
               </a>
             </td>
             <td className="whitespace-nowrap px-6 py-4">
-              <button
+              <a
                 type="button"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                onClick={() => window.open(docUrl, "_blank")}
+                href={`http://localhost:3000/${docUrl}`}
               >
                 View
-              </button>
+              </a>
             </td>
           </tr>
         );
@@ -114,10 +117,10 @@ function DocumentModal({ documentUrl, onClose }) {
               <table className="mt-4 w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                    <th className="px-6 py-3 text-left text-s font-medium uppercase tracking-wider text-gray-500">
                       Name
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                    <th className="px-6 py-3 text-left text-s font-medium uppercase tracking-wider text-gray-500">
                       URL
                     </th>
                   </tr>
@@ -130,7 +133,7 @@ function DocumentModal({ documentUrl, onClose }) {
             <div className="mt-4 flex justify-end">
               <button
                 type="button"
-                className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                className="inline-flex justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-100 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
                 onClick={onClose}
               >
                 Close
@@ -199,7 +202,7 @@ export function Tables() {
   const [showModal, setShowModal] = useState(false);
   const [action, setAction] = useState("");
   const [showDocumentModal, setShowDocumentModal] = useState(false);
-  const [documentUrl, setDocumentUrl] = useState("");
+  const [documents, setDocuments] = useState([]);
   const [selectedClientIndex, setSelectedClientIndex] = useState(null);
   const [tableData, setTableData] = useState(authorsTableData);
   const [showActionResultModal, setShowActionResultModal] = useState(false);
@@ -218,7 +221,7 @@ export function Tables() {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
-        setRequests(data);
+        setTableData(data);
       } catch (error) {
         console.error(error);
       }
@@ -228,14 +231,40 @@ export function Tables() {
   const handleConfirm = () => {
     console.log(`Confirmed: ${action}`);
     setShowModal(false);
-    setClientName(tableData[selectedClientIndex].name);
+    setClientName(tableData[selectedClientIndex].client_name);
     setShowActionResultModal(true);
     setTableData(tableData.filter((_, index) => index !== selectedClientIndex));
+// sending msg to backend 
+const formData = new FormData();
+
+formData.append("accepted", action);
+console.log(action)
+
+
+const request_id = tableData[selectedClientIndex]._id
+
+// Make a POST request to the backend API to save the updated home data
+fetch(`http://localhost:3000/park/accept-request/${request_id}`, {
+  method: "PUT",
+  body: formData,
+})
+  .then((response) => response.json())
+  .then((data) => {
+    console.log(data);
+   
+  })
+  .catch((error) => console.error(error));
+
+
+
+
+
+    console.log(request_id)
     setSelectedClientIndex(null);
   };
 
-  const handleViewClick = (url) => {
-    setDocumentUrl(url);
+  const handleViewClick = (documents) => {
+    setDocuments(documents);
     setShowDocumentModal(true);
   };
 
@@ -259,7 +288,7 @@ export function Tables() {
 
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
-      {requests.map((event) => (
+      {/* {requests.map((event) => (
         <div key={event._id}>
           <a
             href={`http://localhost:3000/${event.land_title_deed}`}
@@ -268,7 +297,7 @@ export function Tables() {
             Open Document
           </a>
         </div>
-      ))}
+      ))} */}
       <Card>
         <CardHeader variant="gradient" color="blue" className="mb-8 p-6">
           <Typography variant="h6" color="white">
@@ -296,7 +325,7 @@ export function Tables() {
             </thead>
             <tbody>
               {tableData.map(
-                ({ img, name, email, parkName, requestDate }, key) => {
+                ({ client_pic, client_name, email, park_name, createdAt }, key) => {
                   const className = `py-3 px-5 ${
                     key === authorsTableData.length - 1
                       ? ""
@@ -304,17 +333,17 @@ export function Tables() {
                   }`;
 
                   return (
-                    <tr key={name}>
+                    <tr key={client_name}>
                       <td className={className}>
                         <div className="flex items-center gap-4">
-                          <Avatar src={img} alt={name} size="sm" />
+                          <Avatar src={`http://localhost:3000/profileImgs/${client_pic}`} alt={client_name} size="sm" />
                           <div>
                             <Typography
                               variant="small"
                               color="blue-gray"
                               className="font-semibold"
                             >
-                              {name}
+                              {client_name}
                             </Typography>
                             <Typography className="text-xs font-normal text-blue-gray-500">
                               {email}
@@ -324,12 +353,12 @@ export function Tables() {
                       </td>
                       <td className={className}>
                         <Typography className="text-xs font-semibold text-blue-gray-600">
-                          {parkName}
+                          {park_name}
                         </Typography>
                       </td>
                       <td className={className}>
                         <Typography className="text-xs font-semibold text-blue-gray-600">
-                          {requestDate}
+                          {new Date(createdAt).toLocaleString()}
                         </Typography>
                       </td>
                       <td className={className}>
@@ -349,7 +378,7 @@ export function Tables() {
                         <button
                           className="mt-1 ml-3 rounded-md bg-green-600 py-1 px-3 text-white hover:bg-green-700 focus:outline-none"
                           onClick={() =>
-                            handleViewClick(authorsTableData[key].document)
+                            handleViewClick(tableData[key].documents)
                           }
                         >
                           View
@@ -450,7 +479,7 @@ export function Tables() {
       )}
       {showDocumentModal && (
         <DocumentModal
-          documentUrl={documentUrl}
+          documents={documents}
           onClose={handleCloseDocumentModal}
         />
       )}

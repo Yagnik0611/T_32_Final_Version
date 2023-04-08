@@ -618,7 +618,7 @@ console.log(formData)
       </div>
       
       {showModal && (
-        <div className="fixed z-10 inset-0 overflow-y-auto">
+        <div className="fixed m-20 z-10 inset-0 overflow-y-auto">
           <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div
               className="fixed inset-0 transition-opacity"
@@ -635,7 +635,7 @@ console.log(formData)
               >
                 <div>
                   <img
-                    src={selectedFacility.image}
+                     src={`http://localhost:3000/${selectedFacility.image}`}
                     alt="facility-image"
                     className="w-full rounded-lg"
                   />
@@ -675,35 +675,29 @@ console.log(formData)
                     </div>
                   </div>
                 </div>
-                <div className="mt-5 sm:mt-6 flex justify-center">
-                  <button
-                    onClick={() => setBookingForm(true)}
-                    className="bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
-                  >
-                    Open Booking Form
-                  </button>
-                </div>
+               
 
                 <div className="absolute top-0 right-0 m-4">
                   <button
                     onClick={() => setShowModal(false)}
                     className="text-red-500 hover:text-red-700 focus:outline-none"
                   >
-                    <svg
-                      className="h-6 w-6"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M6 18L18 6M66l12 12"
-                      />
-                    </svg>
+                   <svg
+  className="h-6 w-6"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  stroke="currentColor"
+  aria-hidden="true"
+>
+  <path
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth={2}
+    d="M6 18L18 6M6 6l12 12"
+  />
+</svg>
+
+
                   </button>
                 </div>
               </div>

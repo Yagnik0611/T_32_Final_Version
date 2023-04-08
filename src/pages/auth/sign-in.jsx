@@ -86,13 +86,67 @@ export  function SignIn() {
   return (
 
     <>
-      <img
-
-       src="https://images.unsplash.com/photo-1497294815431-9365093b7331?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80"
-        className="absolute inset-0 z-0 h-full w-full object-cover"
-      />
-      <div className="absolute inset-0 z-0 h-full w-full bg-black/50" />
-      <div className="container mx-auto p-4">
+      <nav className="fixed top-0 left-0 z-20 w-full border-b border-gray-200 bg-white py-2.5 px-6 sm:px-4">
+        <div className="container mx-auto flex max-w-6xl flex-wrap items-center justify-between">
+          <a href="/Home" className="flex items-center">
+            <span className="self-center whitespace-nowrap text-xl font-semibold">
+              GBC Park & Recreation
+            </span>
+          </a>
+          <div className="mt-2 sm:mt-0 sm:flex md:order-2">
+                <a
+                  type="button"
+                  href="/auth/sign-in"
+                  className="rounde mr-3 focus:outline-none hidden border border-blue-700 py-1.5 px-6 text-center text-sm font-medium text-blue-700 focus:outline-none focus:ring-4  md:inline-block rounded-lg"
+                >
+                  Login
+                </a>
+                <a
+                  type="button"
+                  href="/auth/sign-up"
+                  className="rounde mr-3 focus:outline-none hidden bg-blue-700 py-1.5 px-6 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4  md:mr-0 md:inline-block rounded-lg"
+                >
+                  Register
+                </a>
+               
+              </div>
+          <div
+            className="hidden w-full items-center justify-between md:order-1 md:flex md:w-auto"
+            id="navbar-sticky"
+          >
+            <ul className="mt-4 flex flex-col rounded-lg border border-gray-100 bg-gray-50 p-4 md:mt-0 md:flex-row md:space-x-8 md:border-0 md:bg-white md:text-sm md:font-medium">
+              <li>
+                <a
+                  href="/Home"
+                  className="block rounded bg-blue-700 py-2 pl-3 pr-4 text-white md:bg-transparent md:p-0 md:text-blue-700"
+                 
+                >
+                  Home
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/ParkList"
+                  className="block rounded py-2 pl-3 pr-4 text-gray-700 hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-blue-700"
+                  aria-current="page"
+                >
+                  Park List
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <div className="relative">
+  <img
+    src="https://images.unsplash.com/photo-1497294815431-9365093b7331?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80"
+    className="absolute inset-0 z-0 h-full w-full object-cover"
+  />
+  <div className="absolute inset-0 z-0 h-full w-full bg-black/50" />
+  <div className="container mx-auto p-4">
+    <div className="h-screen  overflow-y-auto">
+     
+        
         <Card className="absolute top-2/4 left-2/4 w-full max-w-[24rem] -translate-y-2/4 -translate-x-2/4">
           <CardHeader
             variant="gradient"
@@ -228,6 +282,8 @@ export  function SignIn() {
             </Typography>
           </CardFooter>
         </Card>
+        </div>
+        </div>
       </div>
     </>
   )
