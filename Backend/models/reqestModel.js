@@ -5,6 +5,14 @@ const requestSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  park_name:{
+    type:String
+    
+  },
+  client_name:{
+    type: String,
+  },
+
   park_id: {
     type: String,
     required: true
@@ -17,7 +25,10 @@ const requestSchema = new mongoose.Schema({
     type: String,
     required: true
   },
- 
+  client_pic:{
+    type:String
+  }
+ ,
   land_title_deed: {
     type: String,
     required: true
@@ -37,7 +48,9 @@ const requestSchema = new mongoose.Schema({
   accepted: {
     type: Boolean,
     default: false
-  }
+  },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
 });
 
 const Request = mongoose.model('Request', requestSchema);

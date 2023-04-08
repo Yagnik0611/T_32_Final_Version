@@ -2,12 +2,14 @@ const express = require('express');
 const router = express.Router();
 const multer = require("multer")
 const Park = require('../models/parkModel');
+const Booking = require('../models/bookingModel');
 const fs = require('fs');
 const Request = require('../models/reqestModel');
 const path = require('path');
  
 
-const uuid = require('uuid')
+const uuid = require('uuid');
+const Client = require('../models/clientModels');
 // Location where you want to store the profile Pic 
 const storage = multer.diskStorage({
 
@@ -437,7 +439,20 @@ router.post('/create-park-and-request', upload2.fields([
     // Get the data for the new park from the request body
     const { name, clientId,phone,email, address, description } = req.body;
     
+    let client_name = " " 
+    let client_pic =" "
     // Load the data for all the pages from a JSON file
+    
+    Client.findOne({ email: clientId  }).then((client) => {
+      if (client) {
+        client_name =  client.first_name + " " + client.last_name
+        client_pic = client.profileImage
+
+      } else {
+       client_name =" "
+       client_pic = " "
+      }
+    });
     
     const pagesDataPath = path.resolve(__dirname, 'pages-data.json');
     const pagesData = JSON.parse(fs.readFileSync(pagesDataPath, 'utf8'));      
@@ -457,16 +472,19 @@ router.post('/create-park-and-request', upload2.fields([
 
     // Save the new park to the database
     const savedPark = await newPark.save();
- console.log(savedPark)
- console.log(savedPark._id)
+//  console.log(savedPark)
+//  console.log(savedPark._id)
     // Get the file objects from the request
     const { land_title_deed, purchase_agreement, zoning_by_laws, building_permits } = req.files;
-console.log(land_title_deed[0].filename)
+// console.log(land_title_deed[0].filename)
     // Create a new request object with the received data and the IDs of the newly created park
     const newRequest = new Request({
+      client_name: client_name,
+      park_name: name,
+      client_pic :client_pic,
       client_id: clientId,
       park_id: savedPark._id,
-        phone,
+         phone,
          email,
         land_title_deed: land_title_deed[0].filename,
         purchase_agreement: purchase_agreement[0].filename,
@@ -475,7 +493,7 @@ console.log(land_title_deed[0].filename)
       
       
     });
-console.log(newRequest)
+// console.log(newRequest)
     // Save the new request to the database
     const savedRequest = await newRequest.save();
 
@@ -496,7 +514,7 @@ router.delete('/:parkId/facility',upload.none(), async (req, res) => {
     if (!park) {
       return res.status(404).json({ message: 'Park data not found' });
     }
-console.log(req.body._id)
+// console.log(req.body._id)
     const facilityId = req.body._id;
     const facilityIndex = park.facilities.facilities.findIndex(facility => facility._id.toString() === facilityId);
 
@@ -526,24 +544,35 @@ router.get('/request', async (req, res) => {
         const zoning_by_lawsPath =  `documents/${event.zoning_by_laws}`; 
         const building_permitsPath =  `documents/${event.building_permits}`; 
         
+        
         return { ...event.toObject(), 
-          land_title_deed: land_title_deedPath ,
-          purchase_agreement:purchase_agreementPath,
-          zoning_by_laws: zoning_by_lawsPath,
-          building_permits: building_permitsPath
-
+          documents: {
+            land_title_deed:  land_title_deedPath
+             
+            ,
+            purchase_agreement: 
+              purchase_agreementPath,
+              
+          
+            zoning_by_laws: 
+          zoning_by_lawsPath,
+             
+           
+            building_permits: 
+              building_permitsPath,
+              
+          }
         };
       })
     );
-    console.log(requestsWithDocs)
+    // console.log(requestsWithDocs)
     res.json(requestsWithDocs);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
 });
-// router.get('/requests', async (req, res) => {
-//   try {
+
 //     const requests = await Request.find();
     
 //     const requestsWithDocs = await Promise.all(
@@ -578,29 +607,43 @@ router.get('/request', async (req, res) => {
 
 
 // Define the endpoint to accept/reject a request and update the corresponding park
-router.put('/accept-request/:requestId', async (req, res) => {
+router.put('/accept-request/:requestId',upload.none() ,async (req, res) => {
   try {
-    const { accepted } = req.body;
+    let { accepted } = req.body;
+    console.log(req.body)
+
+    if (accepted =="accept")
+    {
+accepted = true
+    }
+    else{
+      accepted = false
+    }
+    console.log(accepted)
+
     const request = await Request.findById(req.params.requestId);
     if (!request) {
       return res.status(404).json({ message: 'Request not found' });
     }
     request.accepted = accepted;
+    console.log(request)
     await request.save();
     
     // Update the corresponding park's accepted status if the request is accepted
     if (accepted) {
-      const park = await Park.findById(request.park_id);
+      const park = await Park.findOne({ _id: request.park_id});
+      // console.log(park)
       if (!park) {
         return res.status(404).json({ message: 'Park not found' });
       }
       park.accepted = true;
+      console.log(park)
       await park.save();
     } else {
       // Delete the corresponding park if the request is rejected
       await Park.deleteOne({ _id: request.park_id });
     }
-
+    await Request.deleteOne({ _id: request._id });
     res.json({ message: 'Request updated successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -668,6 +711,39 @@ router.post('/documnttest', upload.single('file'), (req, res) => {
   console.log(file);
   // Handle the files here
   res.sendStatus(200);
+});
+
+router.get('/parkList', async (req, res) => {
+  try {
+    const parkData = await Park.find()
+    if (!parkData) {
+      return res.status(404).json({ message: 'park data not found' });
+    }
+    res.json(parkData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+router.post('/booking', async (req, res) => {
+  try {
+    const { facility, user, park_id, booking_date, start_time, end_time, equipment, number_of_guests } = req.body;
+    const newBooking = new Booking({
+      facility,
+      user,
+      park_id,
+      booking_date,
+      start_time,
+      end_time,
+      equipment,
+      number_of_guests
+    });
+    const savedBooking = await newBooking.save();
+    res.status(201).json(savedBooking);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
 });
 
 module.exports = router;

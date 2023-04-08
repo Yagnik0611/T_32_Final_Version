@@ -23,6 +23,8 @@ app.use(express.json({ limit: "50mb"}));
 app.use('/uploads', express.static(path.join(__dirname, 'parkImages')));
 
 app.use('/documents', express.static(path.join(__dirname, 'documents')));
+
+app.use('/profileImgs', express.static(path.join(__dirname, 'ProfileImgs')));
 app.use("/park", park);
 app.use("/admin", adminsRouter);
 app.use("/auth", loginRouter);
