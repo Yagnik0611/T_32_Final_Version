@@ -147,7 +147,7 @@ function ClientFacilityList() {
         }
         const data = await response.json();
        setFacilities(data)
-       
+       console.log(data)
  
       } catch (error) {
         console.error(error);
@@ -173,7 +173,7 @@ function ClientFacilityList() {
 
     );
     const formData = new FormData();
-
+console.log(updatedFacility.image)
    
     // Append upldated facility fields to FormData
     formData.append('_id', updatedFacility._id);
@@ -181,7 +181,7 @@ function ClientFacilityList() {
     formData.append('location', updatedFacility.location);
     formData.append('description', updatedFacility.description);
     formData.append('capacity', updatedFacility.capacity);
-    formData.append('image', updatedFacility.imageFile);
+    formData.append('image', updatedFacility.image);
     formData.append('visitors[max]', updatedFacility.visitors.max);
     formData.append('visitors[min]', updatedFacility.visitors.min);
     
@@ -247,8 +247,7 @@ console.log(facilityToDelete)
 
   const filteredData = facilities.filter((facility) => {
     return (
-      facility.name.toLowerCase().includes(searchText.toLowerCase()) ||
-      facility.location.toLowerCase().includes(searchText.toLowerCase())
+      facility.name.toLowerCase().includes(searchText.toLowerCase())
     );
   });
  
@@ -334,18 +333,14 @@ console.log(formData)
             </span>
           </a>
           <div className="mt-2 sm:mt-0 sm:flex md:order-2">
-            <button
+           
+            <a
+             href="../../client/profile"
               type="button"
-              className="rounde mr-3 hidden rounded-lg border border-blue-700 py-1.5 px-6 text-center text-sm font-medium text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 md:inline-block"
+              className="rounde mr-3 hidden rounded-lg bg-blue-400 py-1.5 px-6 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 md:mr-0 md:inline-block"
             >
-              Login
-            </button>
-            <button
-              type="button"
-              className="rounde mr-3 hidden rounded-lg bg-blue-700 py-1.5 px-6 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 md:mr-0 md:inline-block"
-            >
-              Register
-            </button>
+              Profile
+            </a>
             <button
               data-collapse-toggle="navbar-sticky"
               type="button"
@@ -396,7 +391,7 @@ console.log(formData)
       </nav>
 
       <div className="bg-white  pt-32">
-        <h1 className="text-center text-2xl font-bold text-gray-800"></h1>
+        <h1 className="text-center text-2xl font-bold text-gray-800">Edit Facility Page</h1>
       </div>
 
       <div className="flex flex-wrap items-center  justify-center overflow-x-auto overflow-y-hidden bg-white   py-10 text-gray-800">

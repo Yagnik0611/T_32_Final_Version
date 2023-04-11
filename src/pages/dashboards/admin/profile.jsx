@@ -181,50 +181,59 @@ useEffect(() => {
                     <span className="text-blueGray-600 block text-xl font-bold uppercase tracking-wide">
                       22
                     </span>
-                    <span className="text-blueGray-400 text-sm">Friends</span>
+                    <span className="text-blueGray-400 text-sm">Clients</span>
                   </div>
                   <div className="mr-4 p-3 text-center">
                     <span className="text-blueGray-600 block text-xl font-bold uppercase tracking-wide">
                       10
                     </span>
-                    <span className="text-blueGray-400 text-sm">Photos</span>
+                    <span className="text-blueGray-400 text-sm">Users</span>
                   </div>
                   <div className="p-3 text-center lg:mr-4">
                     <span className="text-blueGray-600 block text-xl font-bold uppercase tracking-wide">
-                      89
+                      4
                     </span>
-                    <span className="text-blueGray-400 text-sm">Comments</span>
+                    <span className="text-blueGray-400 text-sm">Pakrs</span>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="text-center mt-12">
-            <h3 className="text-4xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2 capitalize">
-            {first_name +" " + last_name}
-            </h3>
-            <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
-              
-              <h6> <i className="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>
-               {address + ", " + city+  ", "}</h6>
-              { province+", " +zip_code+ ", " +country}
+            <div className="mt-12 text-center">
+              <h3 className="text-blueGray-700 mb-2 mb-2 text-4xl font-semibold capitalize leading-normal">
+                {first_name + " " + last_name}
+              </h3>
+              {address && city && province ? (
+                <div className="text-blueGray-400 mt-0 mb-2 text-sm font-bold uppercase leading-normal">
+                  <h6>
+                    {" "}
+                    <i className="fas fa-map-marker-alt text-blueGray-400 mr-2 text-lg"></i>
+                    {address + ", " + city + ", "}
+                  </h6>
+                  {province + ", " + zip_code + ", " + country}
+                </div>
+              ) : (
+                <p>...</p>
+              )}
+
+              <div className="text-blueGray-600 mb-2 mt-10 uppercase underline">
+                <i className="fas fa-briefcase text-blueGray-400 mr-2 text-lg"></i>
+                {email}
+              </div>
+              <div className="text-blueGray-600 mb-2">
+                <i className="fas fa-university text-blueGray-400 mr-2 text-lg"></i>
+                University of Computer Science
+              </div>
             </div>
-            <div className="mb-2 text-blueGray-600 mt-10 underline uppercase">
-              <i className="fas fa-briefcase mr-2 text-lg text-blueGray-400" ></i>{email}
-            </div>
-            <div className="mb-2 text-blueGray-600">
-              <i className="fas fa-university mr-2 text-lg text-blueGray-400"></i>University of Computer Science
-            </div>
-          </div>
             <div className="border-blueGray-200 mt-10 border-t py-10 text-center">
               <div className="flex flex-wrap justify-center">
                 <div className="w-full px-4 lg:w-9/12">
-                {about_me   ? (
-                              <p className="text-blueGray-700 mb-4 text-lg leading-relaxed">
-                              {about_me}
-                            </p>
-                ) : (
-                  <p>Hello my name is {first_name + " " + last_name}</p>
-                )}
+                  {about_me ? (
+                    <p className="text-blueGray-700 mb-4 text-lg leading-relaxed">
+                      {about_me}
+                    </p>
+                  ) : (
+                    <p>Hello my name is {first_name + " " + last_name}</p>
+                  )}
                 </div>
               </div>
             </div>

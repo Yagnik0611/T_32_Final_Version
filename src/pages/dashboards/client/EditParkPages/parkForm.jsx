@@ -46,6 +46,7 @@ function ParkForm({ onSubmitSuccess }) {
       window.alert("Please wait 5 to 7 business days to complete this process");
       console.log(parkData);
       console.log(files);
+      
       console.log(files.land_title_deed[0]);
       const formData = new FormData();
       formData.append("clientId", userId);

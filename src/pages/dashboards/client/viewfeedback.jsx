@@ -27,10 +27,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
     
       const fetchData = async () => {
         try {
-          const res = await fetch(`http://localhost:3000/feedback/view`, {
-            headers: {
-              Authorization: localStorage.getItem("token"),
-            },
+          const res = await fetch(`http://localhost:3000/feedback/view2`, {
+           
             method: "GET",
             mode: "cors",
           });
@@ -65,12 +63,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
         <div className="block p-6 rounded-lg shadow-lg bg-white m-4">
           <div className="md:flex md:flex-row">
             <div
-              className="md:w-96 w-36 flex justify-center items-center mb-6 lg:mb-0 mx-auto md:mx-0"
+              className="md:w-90 w-36 flex justify-center items-center mb-6 lg:mb-0 mx-auto md:mx-0"
             >
               <img
-                src="https://mdbootstrap.com/img/Photos/Avatars/img%20%2810%29.jpg"
+               src={`http://localhost:3000/ProfileImgs/${feedback.profileImage}`}
+           
                 className="rounded-full shadow-md"
-                alt="woman avatar"
+               
               />
             </div>
             <div className="md:ml-8 p-5 mb-2">

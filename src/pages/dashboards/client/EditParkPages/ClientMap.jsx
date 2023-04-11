@@ -1,24 +1,24 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Map, Marker, GoogleApiWrapper,InfoWindow } from "google-maps-react";
-
+import { useNavigate,useParams } from "react-router-dom";
 const parks = [
   {
-    name: "High Park",
+    
     location: "Toronto, ON",
     id: 1,
     lat: 43.653208,
     lng: -79.463415,
   },
 ];
-
 const ClientParkMap = ({ google }) => {
 
     const [activeMarker, setActiveMarker] = useState(null);
     const [showInfoWindow, setShowInfoWindow] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedPark, setSelectedPark] = useState(null);
-    const [lat, setLat] = useState(""); 
-    const [lng, setLng] = useState("");
+    const [lat, setLat] = useState(43.653208); 
+    const [lng, setLng] = useState(-79.463415);
+    const { parkId } = useParams();
 
 
     const onEditButtonClick = () => {
@@ -48,6 +48,10 @@ const ClientParkMap = ({ google }) => {
   const mapRef = useRef(null);
 
   useEffect(() => {
+   
+
+         
+
     const map = new google.maps.Map(mapRef.current, {
       zoom: 12,
       center: { lat: 43.653208, lng: -79.463415 },
@@ -64,7 +68,7 @@ const ClientParkMap = ({ google }) => {
 
   return (
     <div>
-            <nav className="fixed top-0 left-0 z-20 w-full border-b border-gray-200 bg-white py-2.5 px-6 sm:px-4">
+         <nav className="fixed top-0 left-0 z-20 w-full border-b border-gray-200 bg-white py-2.5 px-6 sm:px-4">
         <div className="container mx-auto flex max-w-6xl flex-wrap items-center justify-between">
           <a href="/Home" className="flex items-center">
             <span className="self-center whitespace-nowrap text-xl font-semibold">
@@ -72,18 +76,14 @@ const ClientParkMap = ({ google }) => {
             </span>
           </a>
           <div className="mt-2 sm:mt-0 sm:flex md:order-2">
-            <button
+           
+            <a
+             href="../../client/profile"
               type="button"
-              className="rounde mr-3 hidden border border-blue-700 py-1.5 px-6 text-center text-sm font-medium text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 md:inline-block rounded-lg"
+              className="rounde mr-3 hidden rounded-lg bg-blue-400 py-1.5 px-6 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 md:mr-0 md:inline-block"
             >
-              Login
-            </button>
-            <button
-              type="button"
-              className="rounde mr-3 hidden bg-blue-700 py-1.5 px-6 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 md:mr-0 md:inline-block rounded-lg"
-            >
-              Register
-            </button>
+              Profile
+            </a>
             <button
               data-collapse-toggle="navbar-sticky"
               type="button"
@@ -132,16 +132,14 @@ const ClientParkMap = ({ google }) => {
           </div>
         </div>
       </nav>
-
       <div className="pt-32  bg-white">
-        <h1 className="text-center text-2xl font-bold text-gray-800"></h1>
+        <h1 className="text-center text-2xl font-bold text-gray-800">Map</h1>
       </div>
 
-      <div className="flex flex-wrap items-center  overflow-x-auto overflow-y-hidden py-10 justify-center   bg-white text-gray-800">
+      <div className="flex flex-wrap items-center  justify-center overflow-x-auto overflow-y-hidden bg-white   py-10 text-gray-800">
         <a
           rel="noopener noreferrer"
-          href="/EditHome"
-          className="flex items-center flex-shrink-0 px-5 py-3 space-x-2text-gray-600"
+          href={`/Client/EditHome/${parkId}`}          className="space-x-2text-gray-600 flex flex-shrink-0 items-center px-5 py-3"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -151,7 +149,7 @@ const ClientParkMap = ({ google }) => {
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            className="w-4 h-4"
+            className="h-4 w-4"
           >
             <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
           </svg>
@@ -159,8 +157,8 @@ const ClientParkMap = ({ google }) => {
         </a>
         <a
           rel="noopener noreferrer"
-          href="/EditFacilityList"
-          className="flex items-center flex-shrink-0 px-5 py-3 space-x-2 rounded-t-lg text-gray-900"
+          href={`/Client/EditFacilityList/${parkId}`}
+          className="flex flex-shrink-0 items-center space-x-2 rounded-t-lg px-5 py-3 text-gray-900"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -170,7 +168,7 @@ const ClientParkMap = ({ google }) => {
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            className="w-4 h-4"
+            className="h-4 w-4"
           >
             <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
             <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
@@ -180,8 +178,9 @@ const ClientParkMap = ({ google }) => {
 
         <a
           rel="noopener noreferrer"
-          href="/ClientEventList"
-          className="flex items-center flex-shrink-0 px-5 py-3 space-x-2  text-gray-600"
+        
+          href={`/Client/ClientEventList/${parkId}`}
+          className="flex flex-shrink-0 items-center space-x-2 px-5 py-3  text-gray-600"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -191,7 +190,7 @@ const ClientParkMap = ({ google }) => {
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            className="w-4 h-4"
+            className="h-4 w-4"
           >
             <circle cx="12" cy="12" r="10"></circle>
             <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
@@ -200,8 +199,8 @@ const ClientParkMap = ({ google }) => {
         </a>
         <a
           rel="noopener noreferrer"
-          href="/ClientMap"
-          className="flex items-center flex-shrink-0 px-5 py-3 space-x-2  text-gray-600"
+          href={`/Client/ClientMap/${parkId}`}
+          className="flex flex-shrink-0 items-center space-x-2 px-5 py-3  text-gray-600"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -211,7 +210,7 @@ const ClientParkMap = ({ google }) => {
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            className="w-4 h-4"
+            className="h-4 w-4"
           >
             <circle cx="12" cy="12" r="10"></circle>
             <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
@@ -245,55 +244,9 @@ const ClientParkMap = ({ google }) => {
           </InfoWindow>
         )}
       </Map>
-      <button onClick={onEditButtonClick}>Edit</button>
-      {modalVisible && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
-          <div className="bg-white p-8 rounded shadow-lg">
-            <h2 className="text-xl font-bold mb-4">Edit Park Location</h2>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                onUpdateLocation(lat, lng);
-              }}
-            >
-              <label className="block mb-2">
-                Latitude
-                <input
-                  type="text"
-                  value={lat}
-                  onChange={(e) => setLat(e.target.value)}
-                  className="border border-gray-300 p-2 w-full mt-1"
-                />
-              </label>
-              <label className="block mb-2">
-                Longitude
-                <input
-                  type="text"
-                  value={lng}
-                  onChange={(e) => setLng(e.target.value)}
-                  className="border border-gray-300 p-2 w-full mt-1"
-                />
-              </label>
-              <div className="flex justify-between items-center mt-4">
-                <button
-                  type="button"
-                  onClick={onModalClose}
-                  className="bg-gray-200 px-4 py-2 rounded"
-                >
-                  Close
-                </button>
-                <button
-                  type="submit"
-                  className="bg-blue-500 text-white px-4 py-2 rounded"
-                >
-                  Update
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+      
     </div>
+    
       <footer className="bg-gray-900 text-white py-10 text-center">
           <p className="mb-4">
             &copy; 2022 George Brown Company. All rights reserved.

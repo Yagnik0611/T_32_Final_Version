@@ -8,10 +8,10 @@ import {
   
   
 } from "@heroicons/react/24/solid";
-import {Home, Profile, Settings, ViewBookings, ViewFeedback ,Park} from "@/pages/dashboards/client";
+import {Home, Profile, Settings, ViewBookings, ViewFeedback } from "@/pages/dashboards/client";
 import { AiOutlineSetting  } from "react-icons/ai";
 import { RiFeedbackLine } from "react-icons/ri";
-
+import ParkList from "./pages/dashboards/parks/ParkList"
 import { BsFilesAlt } from "react-icons/bs";
 import { SignIn,SignUp } from "@/pages/auth";
 
@@ -56,8 +56,8 @@ const icon = {
       {
         icon: <BsFilesAlt  size="25px" />,
         name: "Park",
-        path: "/park",
-        element: <Park />,
+        path: "../ParkList",
+        element: <ParkList />,
       },
     ],
   },

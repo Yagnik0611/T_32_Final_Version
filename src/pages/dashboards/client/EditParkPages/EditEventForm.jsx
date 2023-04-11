@@ -199,7 +199,7 @@ const EditEventForm = ({ event, onEditEvent, onClose }) => {
         <div>
           <button
             type="submit"
-            class="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none"
+            class="hover:shadow-form mr-10 ml-10 m-3 rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none"
           >
             Submit
           </button>

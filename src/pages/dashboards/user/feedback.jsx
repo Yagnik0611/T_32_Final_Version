@@ -26,13 +26,15 @@ const colors = {
   grey: "#a9a9a9"
 };
 export function FeedBack() {
+  const userId = localStorage.getItem("userId");
   const [currentValue, setCurrentValue] = useState(0);
   const [park, setPark] = useState("");
   const [hoverValue, setHoverValue] = useState(0);
-  const [email, setEmail] = useState("")
+  const [email, setEmail] = useState(userId)
   const [feedback,setFeedback] =useState('')
   const [response, setResponse] = useState("");
   const [rating, setRating] = useState(0)
+ 
   const handleClick = (value) => {
     setCurrentValue(value);
   };
@@ -130,18 +132,7 @@ export function FeedBack() {
                         <h4 className="text-2xl mb-4 text-black font-semibold">Have a suggestion?</h4>
 
                         <form id="feedbackForm" action="" method="">
-                          <div className="relative w-full mb-3">
-                            <label className="block uppercase text-gray-700 text-base font-bold mb-2"
-                              for="email">Email</label>
-                              <input
-                               type="email" 
-                               onChange={(e) => setEmail(e.target.value)}
-                               name="email"
-                               required=""
-                   className="border-0 px-3 py-3 rounded text-base shadow w-full
-                    bg-gray-300 placeholder-black text-gray-800 outline-none focus:bg-gray-400" placeholder=" "
-                                />
-                          </div>
+                          
 
                           <select
                             className="w-full py-2 px-3 text-gray-700  bg-gray-300 border border-gray-400 rounded-lg appearance-none focus:outline-none focus:shadow-outline"

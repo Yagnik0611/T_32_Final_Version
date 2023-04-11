@@ -221,18 +221,14 @@ const EditHome = () => {
             </span>
           </a>
           <div className="mt-2 sm:mt-0 sm:flex md:order-2">
-            <button
+           
+            <a
+             href="../../client/profile"
               type="button"
-              className="rounde mr-3 hidden rounded-lg border border-blue-700 py-1.5 px-6 text-center text-sm font-medium text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 md:inline-block"
+              className="rounde mr-3 hidden rounded-lg bg-blue-400 py-1.5 px-6 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 md:mr-0 md:inline-block"
             >
-              Login
-            </button>
-            <button
-              type="button"
-              className="rounde mr-3 hidden rounded-lg bg-blue-700 py-1.5 px-6 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 md:mr-0 md:inline-block"
-            >
-              Register
-            </button>
+              Profile
+            </a>
             <button
               data-collapse-toggle="navbar-sticky"
               type="button"
@@ -283,7 +279,7 @@ const EditHome = () => {
       </nav>
 
       <div className="bg-white  pt-32">
-        <h1 className="text-center text-2xl font-bold text-gray-800"></h1>
+        <h1 className="text-center text-2xl font-bold text-gray-800">Edit Home Page</h1>
       </div>
 
       <div className="flex flex-wrap items-center  justify-center overflow-x-auto overflow-y-hidden bg-white   py-10 text-gray-800">
@@ -426,14 +422,14 @@ const EditHome = () => {
         {activeSection === 5 && (
           <div className="mb-6">
             <label
-              className="mb-2 block font-bold text-gray-700"
+              className="mb-3 block text-base font-medium text-gray-800"
               htmlFor="background-image"
             >
               Background Image
             </label>
             <input
               fileName="backgroundImg"
-              className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:outline-none"
+              className="focus:shadow-outline w-full rounded-lg bg-white px-4 py-2 text-gray-700 focus:outline-none"
               id="background-image"
               type="file"
               accept="image/*"
@@ -446,13 +442,13 @@ const EditHome = () => {
             {
               <div className="mb-6">
                 <label
-                  className="mb-2 block font-bold text-gray-700"
+                  className="mb-3 block text-base font-medium text-gray-800"
                   htmlFor="park-title"
                 >
                   Title
                 </label>
                 <input
-                  className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:outline-none"
+                  className="form-control border-[] w-full rounded-md border bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#2f3d44] focus:shadow-md"
                   id="park-title"
                   type="text"
                   value={newTitle}
@@ -468,13 +464,13 @@ const EditHome = () => {
               <div>
                 {" "}
                 <label
-                  className="mb-2 block font-bold text-gray-700"
+                  className="mb-3 block text-base font-medium text-gray-800"
                   htmlFor="events-textarea"
                 >
                   Events & Programs
                 </label>
                 <textarea
-                  className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:outline-none"
+                  className="form-control border-[] w-full rounded-md border bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#2f3d44] focus:shadow-md"
                   id="events-textarea"
                   rows="5"
                   value={newEventsText}
@@ -489,13 +485,13 @@ const EditHome = () => {
             {
               <div className="mb-6">
                 <label
-                  className="mb-2 block font-bold text-gray-700"
+                  className="mb-3 block text-base font-medium text-gray-800"
                   htmlFor="about-textarea"
                 >
                   About Us
                 </label>
                 <textarea
-                  className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:outline-none"
+                  className="form-control border-[] w-full rounded-md border bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#2f3d44] focus:shadow-md"
                   id="about-textarea"
                   rows="5"
                   value={newAboutText}
@@ -510,13 +506,13 @@ const EditHome = () => {
             {
               <div className="mb-6">
                 <label
-                  className="mb-2 block font-bold text-gray-700"
+                  className="mb-3 block text-base font-medium text-gray-800"
                   htmlFor="park-info"
                 >
                   Info
                 </label>
                 <textarea
-                  className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:outline-none"
+                  className="form-control border-[] w-full rounded-md border bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#2f3d44] focus:shadow-md"
                   id="park-info"
                   rows="5"
                   value={newInfo.join("\n")}
@@ -533,7 +529,7 @@ const EditHome = () => {
             {
               <div className="mb-6">
                 <label
-                  className="mb-2 block font-bold text-gray-700"
+                  className="mb-3 block text-base font-medium text-gray-800"
                   htmlFor="park-hours"
                 >
                   Hours
@@ -541,7 +537,7 @@ const EditHome = () => {
                 {newHours.map((item, index) => (
                   <div key={index} className="mb-2 flex">
                     <input
-                      className="w-1/2 rounded-lg border px-3 py-2 text-gray-700 focus:outline-none"
+                      className="form-control border-[] w-1/2 rounded-md border bg-white py-3 px-2 text-base font-medium text-[#6B7280] outline-none focus:border-[#2f3d44] focus:shadow-md"
                       type="text"
                       value={item.day}
                       onChange={(event) => {
@@ -567,16 +563,16 @@ const EditHome = () => {
           </div>
         )}
 
-        <div className="mb-6">
+        <div className="mx-auto flex max-w-[200px] justify-between">
           <button
-            className="rounded-full bg-gray-900 py-2 px-4 text-lg font-semibold text-white"
+            className="mt-4 rounded-md bg-gray-800 py-2 px-6 text-white hover:bg-gray-700"
             onClick={handlePreviousSection}
             disabled={activeSection === 0}
           >
             Previous
           </button>
           <button
-            className="rounded-full bg-gray-900 py-2 px-4 text-lg font-semibold text-white"
+            className="mt-4 rounded-md bg-gray-800 py-2 px-6 text-white hover:bg-gray-700"
             onClick={handleNextSection}
             disabled={activeSection === sectionList.length - 1}
           >

@@ -63,18 +63,18 @@ export function Settings() {
         mode: "cors",
       });
       if (res.status != 200) {
-        //setTimeOut("true");
-        // {
-        //   setTimeout(() => {
-        //     Swal.fire({
-        //       title: "Time out ",
-        //       text: "Oops Something went Wrong Please Sign In Again! ",
-        //       icon: "error",
-        //       confirmButtonText: "ok",
-        //     });
-        //     navigate("../../auth/sign-in")("true");
-        //   }, 1);
-        // }
+        setTimeOut("true");
+        {
+          setTimeout(() => {
+            Swal.fire({
+              title: "Time out ",
+              text: "Oops Something went Wrong Please Sign In Again! ",
+              icon: "error",
+              confirmButtonText: "ok",
+            });
+            navigate("../../auth/sign-in")("true");
+          }, 1);
+        }
       }
       const resp = await res.json();
       console.log(resp);
@@ -482,7 +482,7 @@ export function Settings() {
 
           <div className="mt-10 sm:mt-0">
             <div className="md:grid md:grid-cols-4 md:gap-6">
-              <div className="mt-5 md:col-span-2 md:mt-0">
+              {/* <div className="mt-5 md:col-span-2 md:mt-0">
                 <form action="#" method="POST">
                   <div className="overflow-hidden   rounded-2xl shadow-lg sm:rounded-md">
                     <div className="space-y-6 rounded-xl bg-white px-4 py-5 sm:p-6">
@@ -495,12 +495,7 @@ export function Settings() {
                       </div>
 
                       <fieldset>
-                        {/* {<div
-                        className="ml-3  justify-center text-lg   text-gray-700 dark:text-gray-800"
-                        aria-hidden="true"
-                      >
-                        By Email
-                      </div>} */}
+                  
                         <div className="mt-4 space-y-4">
                           <div className="flex items-start">
                             <label className="relative inline-flex cursor-pointer items-center">
@@ -543,9 +538,9 @@ export function Settings() {
                     </div>
                   </div>
                 </form>
-              </div>
+              </div> */}
 
-              <div className="mt-5 md:col-span-2 md:mt-0">
+              <div className="mt-10 md:col-span-4 md:mt-0">
                 <form onSubmit={changePassword}>
                   <div className="overflow-hidden  rounded-2xl shadow-lg sm:rounded-md">
                     <div className="ounded-2xl   space-y-6 bg-white px-4 py-5 sm:p-6">

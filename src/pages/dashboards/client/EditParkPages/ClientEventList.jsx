@@ -110,7 +110,9 @@ function ClientEventList() {
     const updatedEventsData = eventsData.map((event) =>
       event._id === updatedEvent._id ? updatedEvent : event
     );
+    console.log("i m here")
     console.log(updatedEvent)
+    
     const formData = new FormData();
 
     formData.append('image', updatedEvent.imageFile);
@@ -186,7 +188,7 @@ function ClientEventList() {
     
    
       
-      console.log(formData)
+     
       
           // Make a POST request to the backend API to save the updated home data
           fetch(`http://localhost:3000/park/${parkId}/events`, {
@@ -225,7 +227,7 @@ function ClientEventList() {
 
   return (
     <body className="bg-white">
-      <nav className="fixed top-0 left-0 z-20 w-full border-b border-gray-200 bg-white py-2.5 px-6 sm:px-4">
+     <nav className="fixed top-0 left-0 z-20 w-full border-b border-gray-200 bg-white py-2.5 px-6 sm:px-4">
         <div className="container mx-auto flex max-w-6xl flex-wrap items-center justify-between">
           <a href="/Home" className="flex items-center">
             <span className="self-center whitespace-nowrap text-xl font-semibold">
@@ -233,18 +235,14 @@ function ClientEventList() {
             </span>
           </a>
           <div className="mt-2 sm:mt-0 sm:flex md:order-2">
-            <button
+           
+            <a
+             href="../../client/profile"
               type="button"
-              className="rounde mr-3 hidden rounded-lg border border-blue-700 py-1.5 px-6 text-center text-sm font-medium text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 md:inline-block"
+              className="rounde mr-3 hidden rounded-lg bg-blue-400 py-1.5 px-6 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 md:mr-0 md:inline-block"
             >
-              Login
-            </button>
-            <button
-              type="button"
-              className="rounde mr-3 hidden rounded-lg bg-blue-700 py-1.5 px-6 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 md:mr-0 md:inline-block"
-            >
-              Register
-            </button>
+              Profile
+            </a>
             <button
               data-collapse-toggle="navbar-sticky"
               type="button"
@@ -295,7 +293,9 @@ function ClientEventList() {
       </nav>
 
       <div className="bg-white  pt-32">
-        <h1 className="text-center text-2xl font-bold text-gray-800"></h1>
+        <h1 className="text-center text-2xl font-bold text-gray-800">
+          Edit Event Page
+        </h1>
       </div>
 
       <div className="flex flex-wrap items-center  justify-center overflow-x-auto overflow-y-hidden bg-white   py-10 text-gray-800">
@@ -412,14 +412,7 @@ function ClientEventList() {
                       >
                         View
                       </button>
-                      <button
-                        className="text-white bg-blue-500 rounded-sm py-2 px-3 mt-2 w-32"
-                        onClick={() => SetTicketForm(true)}
-                        value={event}
-                        onChange={(e) => setEvent(e.target.value)}
-                      >
-                        Tickets
-                      </button>
+                      
                       <button
                         className="text-white bg-red-500 rounded-sm py-2 px-3 mt-2 w-32"
                         onClick={() => handleDeleteEvent(event._id)}
@@ -514,7 +507,7 @@ function ClientEventList() {
 
 const Modal = ({ onClose, children }) => {
   return (
-    <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 flex items-center justify-center">
+    <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 mt-10 flex items-center justify-center">
       <div className="relative w-full max-w-sm">
         <div className="absolute top-0 right-0">
           <button

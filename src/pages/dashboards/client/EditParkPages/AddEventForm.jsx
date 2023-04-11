@@ -90,7 +90,7 @@ const AddEventForm = ({ onEventSubmit }) => {
 
   return (
 
-      <form onSubmit={handleSubmit} className="bg-white p-4 ">
+      <form onSubmit={handleSubmit} className="bg-white p-4  ">
       <div class="-mx-3 flex flex-wrap">
         <div class="w-full px-3 sm:w-1/2">
           <div class="mb-5">

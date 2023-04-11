@@ -15,6 +15,7 @@ import ParkInfo from "./pages/dashboards/parks/ParkInfo";
 import DeniedForm from "./pages/dashboards/parks/DeniedForm";
 import EventList from "./pages/dashboards/parks/EventList";
 import FacilityList from "./pages/dashboards/parks/FacilityList";
+import ClientMap from "./pages/dashboards/client/EditParkPages/ClientMap";
 function App() {
   return (
     <Routes>
@@ -28,6 +29,10 @@ function App() {
       <Route
         path="/client/ClientEventList/:parkId"
         element={<ClientEventList />}
+      />
+      <Route
+        path="/client/ClientMap/:parkId"
+        element={<ClientMap />}
       />
       {/* } />
           <Route path="/ClientEventList" element={<ClientEventList />} />
