@@ -248,7 +248,7 @@ export function Profile() {
   };
 
   const userId =  localStorage.getItem("userId");
-    
+    console.log(userId)
   const fetchData = async () => {
     try{fetch(`http://localhost:3000/client/profile/image/${userId}`)
 .then(response => {

@@ -47,7 +47,7 @@ export const authorsTableData = [
   {
     "client_pic": "https://randomuser.me/api/portraits/men/1.jpg",
     "client_name": "John Michael",
-    "email": "john@creative-tim.com",
+    "email": "gbc@gmai.com",
     "park_name": "Green Park",
     "createdAt": "23/04/18",
     "documents": {

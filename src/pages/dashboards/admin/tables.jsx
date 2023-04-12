@@ -301,7 +301,7 @@ fetch(`http://localhost:3000/park/accept-request/${request_id}`, {
       <Card>
         <CardHeader variant="gradient" color="blue" className="mb-8 p-6">
           <Typography variant="h6" color="white">
-            New Clients Table
+            Clients Table
           </Typography>
         </CardHeader>
         <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">

@@ -1,5 +1,4 @@
-import React, { useRef, useState } from "react";
-const userId = localStorage.getItem("userId");
+import React, { useRef, useState, useEffect } from "react";
 function ParkForm({ onSubmitSuccess }) {
   const [dragging, setDragging] = useState({});
   const [files, setFiles] = useState({});
@@ -16,7 +15,7 @@ function ParkForm({ onSubmitSuccess }) {
     const { name, value } = event.target;
     setParkData({ ...parkData, [name]: value });
   };
-
+  
   const handleReset = () => {
     setParkData({
       description: "",
@@ -42,7 +41,7 @@ function ParkForm({ onSubmitSuccess }) {
         onSubmitSuccess(); // Close the ParkFormModal after successful submission
       }
       const fileReader = new FileReader();
-
+      const userId =  localStorage.getItem("userId");
       window.alert("Please wait 5 to 7 business days to complete this process");
       console.log(parkData);
       console.log(files);
