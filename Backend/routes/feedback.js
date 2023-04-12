@@ -1,7 +1,8 @@
 // importing router from express for api
 const router = require("express").Router();
 // importing model
-let User = require("../models/userModels");
+let user = require("../models/userModels");
+const User = user.getModel
 let Admin = require("../models/adminModels");
 let Feedback = require("../models/feedbackModel")
 let Client = require("../models/clientModels");
@@ -41,6 +42,30 @@ router.post("/add", async (req, res) => {
     .then(feedbacks => res.status(200).json(feedbacks))
     .catch(err => res.status(400).json('Error: ' + err))
 })
+router.route('/view2').get(async (req, res) => {
+  try {
+    const feedbacks = await Feedback.find();
+    const updatedFeedbacks = [];
+    for (const feedback of feedbacks) {
+      console.log(feedback.email)
+      const user = await User.findOne({ email: feedback.email });
+  
+      if (user) {
+       
+        const profileImage = user.profileImage;
+     
+        updatedFeedbacks.push({ ...feedback.toObject(), profileImage });
+        
+      } else {
+        updatedFeedbacks.push(feedback.toObject());
+      }
+    }
+    res.status(200).json(updatedFeedbacks);
+  } catch (err) {
+    res.status(400).json('Error: ' + err);
+  }
+});
+
   
 const handleErrors = (err) => {
   // screating json error for all the fields

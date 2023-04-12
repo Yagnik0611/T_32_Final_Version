@@ -312,9 +312,11 @@ router.put('/:parkId/facilities',upload.single('image'), async (req, res) => {
     if (!park) {
       return res.status(404).json({ message: 'Park data not found' });
     }
+    let equipmentData 
     const filePath = req.file.filename;
-    const equipmentData = req.body.equipment.map((equipmentString) => JSON.parse(equipmentString));
-
+    if(req.body.equipment){
+     equipmentData = req.body.equipment.map((equipmentString) => JSON.parse(equipmentString));
+    }
     const newFacility = {
       image: filePath,
       name: req.body.name,
@@ -381,7 +383,7 @@ router.put('/:parkId/event/update', upload.single('image'),async (req, res) => {
     if (eventIndex < 0) {
       return res.status(404).json({ message: 'Event data not found' });
     }
-    let img = ""
+    let img = park.events.events[eventIndex].image
     if (req.file){
      img = req.file.filename}
     const eventData = {
@@ -404,7 +406,7 @@ router.put('/:parkId/event/update', upload.single('image'),async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
-router.delete('/:parkId/events', async (req, res) => {
+router.delete('/:parkId/events', upload.none(),async (req, res) => {
   try {
     const park = await Park.findOne({ _id: req.params.parkId });
     if (!park) {
@@ -413,7 +415,7 @@ router.delete('/:parkId/events', async (req, res) => {
 
     const eventId = req.body._id;
     const eventIndex = park.events.events.findIndex(event => event._id.toString() === eventId);
-
+console.log(eventIndex)
     if (eventIndex === -1) {
       return res.status(404).json({ message: 'Event not found' });
     }
@@ -453,7 +455,9 @@ router.post('/create-park-and-request', upload2.fields([
        client_pic = " "
       }
     });
+    console.log(clientId)
     
+    console.log(client_pic)
     const pagesDataPath = path.resolve(__dirname, 'pages-data.json');
     const pagesData = JSON.parse(fs.readFileSync(pagesDataPath, 'utf8'));      
     // Create a new park object with the received data
@@ -680,16 +684,20 @@ router.put('/:parkId/facility/update', upload.single('image'), async (req, res) 
     if (facilityIndex < 0) {
       return res.status(404).json({ message: 'Facility data not found' });
     }
-    let img = "";
-    if (req.file) {
-      img = req.file.filename;
+    let equipmentData 
+let filePath =   park.facilities.facilities[facilityIndex].image
+    if(req.file){
+      filePath = req.file.filename;
     }
-    const equipmentData = req.body.equipment.map((equipmentString) => JSON.parse(equipmentString));
+    
+    if(req.body.equipment){
+     equipmentData = req.body.equipment.map((equipmentString) => JSON.parse(equipmentString));
+    }
     const facilityData = {
-      image: img,
+      image:filePath,
       name: req.body.name,
       description: req.body.description,
-      description: req.body.location,
+      location: req.body.location,
       capacity: parseInt(req.body.capacity),
       equipment: equipmentData,
       visitors: {
@@ -746,6 +754,59 @@ router.post('/booking', async (req, res) => {
   }
 });
 
+// Route to get all bookings for a user based on their email
+router.get('/bookings/:userEmail', async (req, res) => {
+  try {
+    // Get user email from request URL parameter
+    const userEmail = req.params.userEmail;
+
+    // Find all bookings for the given user
+    const userBookings = await Booking.find({ user: userEmail }).lean();
+
+    // Loop through bookings and replace park ID with park name
+    for (let i = 0; i < userBookings.length; i++) {
+      const parkId = userBookings[i].park_id;
+      const park =  await Park.findOne({ _id: parkId }).lean();
+      userBookings[i].park_name = park.name;
+      delete userBookings[i].park_id;
+    }
+
+    // Send the user bookings with park names to the client
+    res.status(200).json(userBookings);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+router.get('/bookings', async (req, res) => {
+  try {
+    const bookings = await Booking.find()
+    if (!bookings) {
+      return res.status(404).json({ message: 'No  Booking found.' });
+    }
+    res.json(bookings);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+router.get('/location/:parkid', async (req, res) => {
+  try {
+
+    const id = req.params.parkid;
+
+    const park = await Park.findOne({_id: id})
+
+    if (!park) {
+      return res.status(404).json({ message: 'No  Booking found.' });
+    }
+    res.json(park.address);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
 module.exports = router;
 
  

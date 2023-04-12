@@ -1,148 +1,287 @@
 {
-    "name": "Central Park",
-    "clientId": "abc123",
-    "address": "New York, NY",
+  "name": "Central Park",
+  "clientId": "abc123",
+  "address": "New York, NY",
+  "description": "Central Park is an urban park in New York City",
+  "home": {
+    "title": "Welcome to Central Park",
+    "about": "Central Park is the most visited urban park in the United States.",
+    "events": "Check out the latest events happening in Central Park.",
+    "address": "Central Park, New York, NY",
     "description": "Central Park is an urban park in New York City",
-    "home": {
-      "title": "Welcome to Central Park",
-      "about": "Central Park is the most visited urban park in the United States.",
-      "events": "Check out the latest events happening in Central Park.",
-      "address": "Central Park, New York, NY",
-      "description": "Central Park is an urban park in New York City",
-      "lat": 40.785091,
-      "lng": -73.968285,
-      "info": [
-        "Central Park spans over 840 acres.",
-        "The park contains 58 miles of walking paths.",
-        "Central Park features 36 bridges and arches."
-      ],
-      "hours": [
-        {
-          "day": "Monday",
-          "time": "6:00 am - 1:00 am"
-        },
-        {
-          "day": "Tuesday",
-          "time": "6:00 am - 1:00 am"
-        },
-        {
-          "day": "Wednesday",
-          "time": "6:00 am - 1:00 am"
-        },
-        {
-          "day": "Thursday",
-          "time": "6:00 am - 1:00 am"
-        },
-        {
-          "day": "Friday",
-          "time": "6:00 am - 1:00 am"
-        },
-        {
-          "day": "Saturday",
-          "time": "6:00 am - 1:00 am"
-        },
-        {
-          "day": "Sunday",
-          "time": "6:00 am - 1:00 am"
-        }
-      ],
-      "clientId": "abc123",
-      "backgroundImg": "https://www.centralparknyc.org/images/default-source/homepage-images/homepage_hero_desktop.jpg?sfvrsn=f92a32ee_2"
-    },
-    "facilities":{
-        
-        "facilities": [
+    "lat": 40.785091,
+    "lng": -73.968285,
+    "info": [
+      "Central Park spans over 840 acres.",
+      "The park contains 58 miles of walking paths.",
+      "Central Park features 36 bridges and arches."
+    ],
+    "hours": [
+      {
+        "day": "Monday",
+        "time": "6:00 am - 1:00 am"
+      },
+      {
+        "day": "Tuesday",
+        "time": "6:00 am - 1:00 am"
+      },
+      {
+        "day": "Wednesday",
+        "time": "6:00 am - 1:00 am"
+      },
+      {
+        "day": "Thursday",
+        "time": "6:00 am - 1:00 am"
+      },
+      {
+        "day": "Friday",
+        "time": "6:00 am - 1:00 am"
+      },
+      {
+        "day": "Saturday",
+        "time": "6:00 am - 1:00 am"
+      },
+      {
+        "day": "Sunday",
+        "time": "6:00 am - 1:00 am"
+      }
+    ],
+    "clientId": "abc123",
+    "backgroundImg": "https://www.centralparknyc.org/images/default-source/homepage-images/homepage_hero_desktop.jpg?sfvrsn=f92a32ee_2"
+  },
+  "facilities": {
+    "facilities": [
+      {
+        "name": "Swimming Pool",
+        "description": "An outdoor pool for recreational swimming and laps",
+        "image": "1680066701904-e69ac4bb-9d39-48bd-8c13-87ad921ff313-cover_bg_1.jpg",
+        "capacity": 50,
+        "equipment": [
           {
-            "name": "Swimming Pool",
-            "description": "An outdoor pool for recreational swimming and laps",
-            "image": "1680066701904-e69ac4bb-9d39-48bd-8c13-87ad921ff313-cover_bg_1.jpg",
-            "capacity": 50,
-            "equipment": [
-              {
-                "name": "Pool noodles",
-                "quantity": 10,
-                "description": "Foam tubes used for buoyancy and support"
-              },
-              {
-                "name": "Kickboards",
-                "quantity": 5,
-                "description": "Foam boards used for training and support"
-              }
-            ],
-            "visitors": {
-              "max": 100,
-              "min": 10
-            }
+            "name": "Pool noodles",
+            "quantity": 10,
+            "description": "Foam tubes used for buoyancy and support"
           },
           {
-            "name": "Tennis Court",
-            "description": "An outdoor court for playing tennis",
-            "image": "1680095959621-9a108d88-2be0-4ba9-9bcd-2bfbeb703210-car.jpeg",
-            "capacity": 8,
-            "equipment": [
-              {
-                "name": "Tennis rackets",
-                "quantity": 4,
-                "description": "Rackets used for hitting the ball"
-              },
-              {
-                "name": "Tennis balls",
-                "quantity": 20,
-                "description": "Balls used for playing tennis"
-              }
-            ],
-            "visitors": {
-              "max": 16,
-              "min": 2
-            }
+            "name": "Kickboards",
+            "quantity": 5,
+            "description": "Foam boards used for training and support"
           }
-        ]
+        ],
+        "visitors": {
+          "max": 100,
+          "min": 10
+        }
       },
-"events":{
-  "events": [
-    {
-      "image": "1680285622013-cc27077a-8d60-4c10-bf5b-9f3d52fba6b0-IMG_1185.JPG",
-      "name": "Concert in the Park",
-      "startDate": "2023-07-15",
-      "endDate": "2023-07-15",
-      "startTime": "18:00",
-      "endTime": "22:00",
-      "location": "Main Stage",
-      "description": "Join us for an evening of live music in the park! Featuring popular local bands and musicians.",
-      "numTickets": 500,
-      "bookings": [],
-      "createdAt": "2023-03-29T08:00:00.000Z",
-      "updatedAt": "2023-03-29T08:00:00.000Z"
-    },
-    {
-      "image": "1680285622013-cc27077a-8d60-4c10-bf5b-9f3d52fba6b0-IMG_1185.JPG",
-      "name": "Outdoor Movie Night",
-      "startDate": "2023-08-05",
-      "endDate": "2023-08-05",
-      "startTime": "20:00",
-      "endTime": "23:00",
-      "location": "Amphitheater",
-      "description": "Bring your blankets and chairs for a night of family-friendly movies under the stars!",
-      "numTickets": 200,
-      "bookings": [],
-      "createdAt": "2023-03-29T08:00:00.000Z",
-      "updatedAt": "2023-03-29T08:00:00.000Z"
-    },
-    {
-      "image": "1680277914541-a36e40a3-f04a-440d-a524-08bcb08fbc65-IMG_1185.JPG",
-      "name": "Park Cleanup Day",
-      "startDate": "2023-09-02",
-      "endDate": "2023-09-02",
-      "startTime": "10:00",
-      "endTime": "14:00",
-      "location": "Various Locations",
-      "description": "Help us keep the park clean and beautiful by participating in our annual cleanup day! All volunteers will receive a free t-shirt and lunch.",
-      "numTickets": 100,
-      "bookings": [],
-      "createdAt": "2023-03-29T08:00:00.000Z",
-      "updatedAt": "2023-03-29T08:00:00.000Z"
-    }
-  ]
+      {
+        "name": "Tennis Court",
+        "description": "An outdoor court for playing tennis",
+        "image": "1680095959621-9a108d88-2be0-4ba9-9bcd-2bfbeb703210-car.jpeg",
+        "capacity": 8,
+        "equipment": [
+          {
+            "name": "Tennis rackets",
+            "quantity": 4,
+            "description": "Rackets used for hitting the ball"
+          },
+          {
+            "name": "Tennis balls",
+            "quantity": 20,
+            "description": "Balls used for playing tennis"
+          }
+        ],
+        "visitors": {
+          "max": 16,
+          "min": 2
+        }
+      },
+      {
+        "name": "Basketball Court",
+        "description": "An outdoor court for playing basketball",
+        "image": "basketball-court.jpg",
+        "capacity": 10,
+        "equipment": [
+          {
+            "name": "Basketballs",
+            "quantity": 5,
+            "description": "Balls used for playing basketball"
+          },
+          {
+            "name": "Cones",
+            "quantity": 10,
+            "description": "Used for marking boundaries and drills"
+          }
+        ],
+        "visitors": {
+          "max": 20,
+          "min": 2
+        }
+      },
+      {
+        "name": "Skate Park",
+        "description": "An outdoor park for skateboarding and rollerblading",
+        "image": "skate-park.jpg",
+        "capacity": 20,
+        "equipment": [
+          {
+            "name": "Skateboards",
+            "quantity": 8,
+            "description": "Boards used for skateboarding"
+          },
+          {
+            "name": "Inline Skates",
+            "quantity": 10,
+            "description": "Rollerblades used for skating"
+          }
+        ],
+        "visitors": {
+          "max": 50,
+          "min": 5
+        }
+      },
+      {
+        "name": "Soccer Field",
+        "description": "An outdoor field for playing soccer",
+        "image": "soccer-park.jpg",
+        "capacity": 20,
+        "equipment": [
+          {
+            "name": "Soccer balls",
+            "quantity": 5,
+            "description": "Balls used for playing soccer"
+          },
+          {
+            "name": "Cones",
+            "quantity": 10,
+            "description": "Used for marking boundaries and drills"
+          },
+          {
+            "name": "Goal posts",
+            "quantity": 2,
+            "description": "Used as the target for scoring goals"
+          }
+        ],
+        "visitors": {
+          "max": 40,
+          "min": 4
+        }
+      },
+      {
+        "name": "Outdoor Gym",
+        "description": "An outdoor gym with various equipment for exercise",
+        "image": "outdoor-gym.jpg",
+        "capacity": 10,
+        "equipment": [
+          {
+            "name": "Dumbbells",
+            "quantity": 4,
+            "description": "Weights used for strength training"
+          },
+          {
+            "name": "Resistance bands",
+            "quantity": 5,
+            "description": "Elastic bands used for resistance training"
+          },
+          {
+            "name": "Pull-up bar",
+            "quantity": 1,
+            "description": "Used for upper body strength training"
+          }
+        ],
+        "visitors": {
+          "max": 20,
+          "min": 2
+        }
+      }
+    ]
+  },
+
+  "events": {
+    "events": [
+      {
+        "image": "1680285622013-cc27077a-8d60-4c10-bf5b-9f3d52fba6b0-IMG_1185.JPG",
+        "name": "Concert in the Park",
+        "startDate": "2023-07-15",
+        "endDate": "2023-07-15",
+        "startTime": "18:00",
+        "endTime": "22:00",
+        "location": "Main Stage",
+        "description": "Join us for an evening of live music in the park! Featuring popular local bands and musicians.",
+        "numTickets": 500,
+        "bookings": [],
+        "createdAt": "2023-03-29T08:00:00.000Z",
+        "updatedAt": "2023-03-29T08:00:00.000Z"
+      },
+      {
+        "image": "1680285622013-cc27077a-8d60-4c10-bf5b-9f3d52fba6b0-IMG_1185.JPG",
+        "name": "Outdoor Movie Night",
+        "startDate": "2023-08-05",
+        "endDate": "2023-08-05",
+        "startTime": "20:00",
+        "endTime": "23:00",
+        "location": "Amphitheater",
+        "description": "Bring your blankets and chairs for a night of family-friendly movies under the stars!",
+        "numTickets": 200,
+        "bookings": [],
+        "createdAt": "2023-03-29T08:00:00.000Z",
+        "updatedAt": "2023-03-29T08:00:00.000Z"
+      },
+      {
+        "image": "1680277914541-a36e40a3-f04a-440d-a524-08bcb08fbc65-IMG_1185.JPG",
+        "name": "Park Cleanup Day",
+        "startDate": "2023-09-02",
+        "endDate": "2023-09-02",
+        "startTime": "10:00",
+        "endTime": "14:00",
+        "location": "Various Locations",
+        "description": "Help us keep the park clean and beautiful by participating in our annual cleanup day! All volunteers will receive a free t-shirt and lunch.",
+        "numTickets": 100,
+        "bookings": [],
+        "createdAt": "2023-03-29T08:00:00.000Z",
+        "updatedAt": "2023-03-29T08:00:00.000Z"
+      },
+      {
+        "image": "bbq.jpg",
+        "name": "BBQ and Picnic in the Park",
+        "startDate": "2023-06-25",
+        "endDate": "2023-06-25",
+        "startTime": "12:00",
+        "endTime": "16:00",
+        "location": "Picnic Area",
+        "description": "Bring your favorite foods and drinks and enjoy a day of grilling and picnicking in the park!",
+        "numTickets": 0,
+        "bookings": [],
+        "createdAt": "2023-04-10T08:00:00.000Z",
+        "updatedAt": "2023-04-10T08:00:00.000Z"
+      },
+      {
+        "image": "kite.jpg",
+        "name": "Kite Festival",
+        "startDate": "2023-04-22",
+        "endDate": "2023-04-22",
+        "startTime": "11:00",
+        "endTime": "16:00",
+        "location": "Open Field",
+        "description": "Come fly a kite at our annual Kite Festival! Bring your own kite or purchase one from our vendors. Fun for all ages!",
+        "numTickets": 0,
+        "bookings": [],
+        "createdAt": "2023-04-10T08:00:00.000Z",
+        "updatedAt": "2023-04-10T08:00:00.000Z"
+      },
+      {
+        "image": "iceCream.jpg",
+        "name": "Ice Cream Social",
+        "startDate": "2023-07-29",
+        "endDate": "2023-07-29",
+        "startTime": "14:00",
+        "endTime": "16:00",
+        "location": "Picnic Area",
+        "description": "Join us for an afternoon of ice cream and socializing in the park!",
+        "numTickets": 0,
+        "bookings": [],
+        "createdAt": "2023-04-10T08:00:00.000Z",
+        "updatedAt": "2023-04-10T08:00:00.000Z"
+      }
+    ]
   }
 }
-        
